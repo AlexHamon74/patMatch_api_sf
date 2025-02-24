@@ -34,13 +34,13 @@ class Article
     private ?string $contenu = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
-    private ?\DateTimeImmutable $date_de_creation = null;
+    private ?\DateTimeImmutable $dateDeCreation = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $article_image = null;
+    private ?string $articleImage = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $mis_a_jour_le = null;
+    private ?\DateTimeImmutable $misAJourLe = null;
 
     public function getId(): ?int
     {
@@ -97,36 +97,36 @@ class Article
 
     public function getDateDeCreation(): ?\DateTimeImmutable
     {
-        return $this->date_de_creation;
+        return $this->dateDeCreation;
     }
 
-    public function setDateDeCreation(\DateTimeImmutable $date_de_creation): static
+    public function setDateDeCreation(\DateTimeImmutable $dateDeCreation): static
     {
-        $this->date_de_creation = $date_de_creation;
+        $this->dateDeCreation = $dateDeCreation;
 
         return $this;
     }
 
     public function getArticleImage(): ?string
     {
-        return $this->article_image;
+        return $this->articleImage;
     }
 
-    public function setArticleImage(?string $article_image): static
+    public function setArticleImage(?string $articleImage): static
     {
-        $this->article_image = $article_image;
+        $this->articleImage = $articleImage;
 
         return $this;
     }
 
     public function getMisAJourLe(): ?\DateTimeImmutable
     {
-        return $this->mis_a_jour_le;
+        return $this->misAJourLe;
     }
 
-    public function setMisAJourLe(\DateTimeImmutable $mis_a_jour_le): static
+    public function setMisAJourLe(\DateTimeImmutable $misAJourLe): static
     {
-        $this->mis_a_jour_le = $mis_a_jour_le;
+        $this->misAJourLe = $misAJourLe;
 
         return $this;
     }

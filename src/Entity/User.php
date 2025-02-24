@@ -54,10 +54,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
     #[Assert\date(message : "Ce champs n'est pas valide.")]
-    private ?\DateTimeImmutable $date_de_naissance = null;
+    private ?\DateTimeImmutable $dateDeNaissance = null;
 
     #[ORM\Column(length: 10, nullable: true)]
-    private ?string $numero_de_telephone = null;
+    private ?string $numeroDeTelephone = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
@@ -66,20 +66,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $adresse = null;
 
     #[ORM\Column(length: 5, nullable: true)]
-    private ?string $code_postal = null;
+    private ?string $codePostal = null;
 
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $ville = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $photo_profil = null;
+    private ?string $photoProfil = null;
 
     #[ORM\Column]
     #[Assert\datetime(message : "Ce champs n'est pas valide.")]
-    private ?\DateTimeImmutable $mis_a_jour_le = null;
+    private ?\DateTimeImmutable $misAJourLe = null;
 
     #[ORM\Column(nullable: true)]
-    private ?array $interet_animalier = null;
+    private ?array $interetAnimalier = null;
 
     /**
      * @var Collection<int, Article>
@@ -200,24 +200,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getDateDeNaissance(): ?\DateTimeImmutable
     {
-        return $this->date_de_naissance;
+        return $this->dateDeNaissance;
     }
 
-    public function setDateDeNaissance(\DateTimeImmutable $date_de_naissance): static
+    public function setDateDeNaissance(\DateTimeImmutable $dateDeNaissance): static
     {
-        $this->date_de_naissance = $date_de_naissance;
+        $this->dateDeNaissance = $dateDeNaissance;
 
         return $this;
     }
 
     public function getNumeroDeTelephone(): ?string
     {
-        return $this->numero_de_telephone;
+        return $this->numeroDeTelephone;
     }
 
-    public function setNumeroDeTelephone(?string $numero_de_telephone): static
+    public function setNumeroDeTelephone(?string $numeroDeTelephone): static
     {
-        $this->numero_de_telephone = $numero_de_telephone;
+        $this->numeroDeTelephone = $numeroDeTelephone;
 
         return $this;
     }
@@ -248,12 +248,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getCodePostal(): ?string
     {
-        return $this->code_postal;
+        return $this->codePostal;
     }
 
-    public function setCodePostal(?string $code_postal): static
+    public function setCodePostal(?string $codePostal): static
     {
-        $this->code_postal = $code_postal;
+        $this->codePostal = $codePostal;
 
         return $this;
     }
@@ -272,36 +272,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getPhotoProfil(): ?string
     {
-        return $this->photo_profil;
+        return $this->photoProfil;
     }
 
-    public function setPhotoProfil(?string $photo_profil): static
+    public function setPhotoProfil(?string $photoProfil): static
     {
-        $this->photo_profil = $photo_profil;
+        $this->photoProfil = $photoProfil;
 
         return $this;
     }
 
     public function getMisAJourLe(): ?\DateTimeImmutable
     {
-        return $this->mis_a_jour_le;
+        return $this->misAJourLe;
     }
 
-    public function setMisAJourLe(\DateTimeImmutable $mis_a_jour_le): static
+    public function setMisAJourLe(\DateTimeImmutable $misAJourLe): static
     {
-        $this->mis_a_jour_le = $mis_a_jour_le;
+        $this->misAJourLe = $misAJourLe;
 
         return $this;
     }
 
     public function getInteretAnimalier(): ?array
     {
-        return $this->interet_animalier;
+        return $this->interetAnimalier;
     }
 
-    public function setInteretAnimalier(?array $interet_animalier): static
+    public function setInteretAnimalier(?array $interetAnimalier): static
     {
-        $this->interet_animalier = $interet_animalier;
+        $this->interetAnimalier = $interetAnimalier;
 
         return $this;
     }

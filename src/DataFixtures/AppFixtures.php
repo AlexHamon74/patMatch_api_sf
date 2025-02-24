@@ -31,25 +31,25 @@ class AppFixtures extends Fixture
             ->setMisAJourLe(new DateTimeImmutable());
         $manager->persist($admin_user);
 
-        $eleveur_user = new User();
-        $eleveur_user->setEmail('eleveur@test.com')
-            ->setRoles(['ROLE_ELEVEUR'])
-            ->setPassword($this->hasher->hashPassword($eleveur_user, 'eleveur123'))
-            ->setNom('Test')
-            ->setPrenom('Eleveur')
-            ->setDateDeNaissance(new DateTimeImmutable())
-            ->setMisAJourLe(new DateTimeImmutable());
-        $manager->persist($eleveur_user);
+        // $eleveur_user = new User();
+        // $eleveur_user->setEmail('eleveur@test.com')
+        //     ->setRoles(['ROLE_ELEVEUR'])
+        //     ->setPassword($this->hasher->hashPassword($eleveur_user, 'eleveur123'))
+        //     ->setNom('Test')
+        //     ->setPrenom('Eleveur')
+        //     ->setDateDeNaissance(new DateTimeImmutable())
+        //     ->setMisAJourLe(new DateTimeImmutable());
+        // $manager->persist($eleveur_user);
 
-        $particulier_user = new User();
-        $particulier_user->setEmail('particulier@test.com')
-            ->setRoles(['ROLE_PARTICULIER'])
-            ->setPassword($this->hasher->hashPassword($particulier_user, 'part123'))
-            ->setNom('Test')
-            ->setPrenom('Particulier')
-            ->setDateDeNaissance(new DateTimeImmutable())
-            ->setMisAJourLe(new DateTimeImmutable());
-        $manager->persist($particulier_user);
+        // $particulier_user = new User();
+        // $particulier_user->setEmail('particulier@test.com')
+        //     ->setRoles(['ROLE_PARTICULIER'])
+        //     ->setPassword($this->hasher->hashPassword($particulier_user, 'part123'))
+        //     ->setNom('Test')
+        //     ->setPrenom('Particulier')
+        //     ->setDateDeNaissance(new DateTimeImmutable())
+        //     ->setMisAJourLe(new DateTimeImmutable());
+        // $manager->persist($particulier_user);
 
 
         $manager->flush();

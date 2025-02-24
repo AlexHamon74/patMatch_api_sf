@@ -8,6 +8,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DocumentAdministratifRepository::class)]
+#[ORM\Table(name: '`documentAdministratif`')]
 #[ApiResource]
 class DocumentAdministratif
 {
@@ -20,7 +21,7 @@ class DocumentAdministratif
     private ?User $utilisateur = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    private ?string $chemin_document = null;
+    private ?string $cheminDocument = null;
 
     public function getId(): ?int
     {
@@ -41,12 +42,12 @@ class DocumentAdministratif
 
     public function getCheminDocument(): ?string
     {
-        return $this->chemin_document;
+        return $this->cheminDocument;
     }
 
-    public function setCheminDocument(string $chemin_document): static
+    public function setCheminDocument(string $cheminDocument): static
     {
-        $this->chemin_document = $chemin_document;
+        $this->cheminDocument = $cheminDocument;
 
         return $this;
     }

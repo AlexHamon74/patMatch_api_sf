@@ -28,10 +28,10 @@ class Categorie
     private ?string $description = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $categorie_image = null;
+    private ?string $categorieImage = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $mis_a_jour_le = null;
+    private ?\DateTimeImmutable $misAJourLe = null;
 
     /**
      * @var Collection<int, Article>
@@ -75,24 +75,24 @@ class Categorie
 
     public function getCategorieImage(): ?string
     {
-        return $this->categorie_image;
+        return $this->categorieImage;
     }
 
-    public function setCategorieImage(?string $categorie_image): static
+    public function setCategorieImage(?string $categorieImage): static
     {
-        $this->categorie_image = $categorie_image;
+        $this->categorieImage = $categorieImage;
 
         return $this;
     }
 
     public function getMisAJourLe(): ?\DateTimeImmutable
     {
-        return $this->mis_a_jour_le;
+        return $this->misAJourLe;
     }
 
-    public function setMisAJourLe(\DateTimeImmutable $mis_a_jour_le): static
+    public function setMisAJourLe(\DateTimeImmutable $misAJourLe): static
     {
-        $this->mis_a_jour_le = $mis_a_jour_le;
+        $this->misAJourLe = $misAJourLe;
 
         return $this;
     }
