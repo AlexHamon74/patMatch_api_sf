@@ -1,0 +1,38 @@
+# Configuration PHPStan
+# https://phpstan.org/user-guide/getting-started
+#
+# Commande à utiliser pour lancer l'analyse, 
+# on précise ensuite le fichier où écrire le résultat sinon cela va s'afficher dans la console
+# vendor/bin/phpstan analyse > analyse.md
+
+parameters:
+	# Définition du niveau de contrôle à utiliser
+	# https://phpstan.org/user-guide/rule-levels
+	level: 0
+ 
+	# Permet d'afficher un lien sur lequel on peut cliquer pour accéder à la ligne du fichier où se trouve
+	# l'erreur, cela fonctionne si le fichier d'analyse se trouve au même niveau que le fichier de config 
+	# https://phpstan.org/user-guide/output-format#opening-file-in-an-editor
+	editorUrlTitle: '[link](./%%relFile%%#L%%line%%)'
+ 
+	# A utiliser pour faire fonctionner le paramètre du dessus 'editorUrlTitle', sans ça cela ne fonctionne pas
+	# https://phpstan.org/user-guide/output-format#opening-file-in-an-editor
+	editorUrl: ' '
+ 
+	# Définition des dossiers à scan, on ajoute vendor/ pour que PHPStan ai accès aux fonctions des librairies
+	paths:
+		- src
+		- vendor
+		- config
+
+	# Définition des dossiers à exclure de l'analyse
+	excludePaths:
+		analyse:
+			- vendor/*
+ 
+	# Définition des erreurs à ignorer et ne pas afficher dans le retour final
+    # https://phpstan.org/user-guide/ignoring-errors
+	# ignoreErrors:
+        # -
+		# 	message: '#Access to an undefined property [a-zA-Z0-9\\_]+::\$foo#'
+		# 	path: some/dir/SomeFile.php
