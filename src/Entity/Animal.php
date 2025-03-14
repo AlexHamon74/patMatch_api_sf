@@ -82,6 +82,9 @@ class Animal
     #[ORM\OneToMany(targetEntity: AnimalPersonnalite::class, mappedBy: 'animal')]
     private Collection $animalPersonnalites;
 
+    #[ORM\ManyToOne(inversedBy: 'animals')]
+    private ?Race $race = null;
+
     public function __construct()
     {
         $this->correspondances = new ArrayCollection();
@@ -293,6 +296,18 @@ class Animal
                 $animalPersonnalite->setAnimal(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRace(): ?Race
+    {
+        return $this->race;
+    }
+
+    public function setRace(?Race $race): static
+    {
+        $this->race = $race;
 
         return $this;
     }
