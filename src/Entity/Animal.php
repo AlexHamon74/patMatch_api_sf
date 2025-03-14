@@ -5,6 +5,8 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Enum\SexeAnimal;
 use App\Repository\AnimalRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -67,6 +69,17 @@ class Animal
 
     #[ORM\ManyToOne(inversedBy: 'animals')]
     private ?User $utilisateur = null;
+
+    /**
+     * @var Collection<int, Correspondance>
+     */
+    #[ORM\OneToMany(targetEntity: Correspondance::class, mappedBy: 'animal')]
+    private Collection $correspondances;
+
+    public function __construct()
+    {
+        $this->correspondances = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -213,6 +226,36 @@ class Animal
     public function setUtilisateur(?User $utilisateur): static
     {
         $this->utilisateur = $utilisateur;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Correspondance>
+     */
+    public function getCorrespondances(): Collection
+    {
+        return $this->correspondances;
+    }
+
+    public function addCorrespondance(Correspondance $correspondance): static
+    {
+        if (!$this->correspondances->contains($correspondance)) {
+            $this->correspondances->add($correspondance);
+            $correspondance->setAnimal($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCorrespondance(Correspondance $correspondance): static
+    {
+        if ($this->correspondances->removeElement($correspondance)) {
+            // set the owning side to null (unless already changed)
+            if ($correspondance->getAnimal() === $this) {
+                $correspondance->setAnimal(null);
+            }
+        }
 
         return $this;
     }
