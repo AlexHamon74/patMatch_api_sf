@@ -51,14 +51,6 @@ DATABASE_URL="mysql://app:!ChangeMe!@127.0.0.1:3306/app?serverVersion=8.0.32&cha
         php bin/console doctrine:fixtures:load
         ```
 
-    - Si une erreur survient lors de l'enregistrement des fixtures, faire ces commandes :
-        ```bash
-        php bin/console doctrine:migrations:dump-schema
-        ```
-        ```bash
-        php bin/console lexik:jwt:generate-keypair
-        ```
-
 ### Lancez le serveur 💻
 Pour lancer le serveur local et accéder à votre projet :
 ```bash
