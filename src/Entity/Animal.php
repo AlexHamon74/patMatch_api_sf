@@ -76,9 +76,16 @@ class Animal
     #[ORM\OneToMany(targetEntity: Correspondance::class, mappedBy: 'animal')]
     private Collection $correspondances;
 
+    /**
+     * @var Collection<int, AnimalPersonnalite>
+     */
+    #[ORM\OneToMany(targetEntity: AnimalPersonnalite::class, mappedBy: 'animal')]
+    private Collection $animalPersonnalites;
+
     public function __construct()
     {
         $this->correspondances = new ArrayCollection();
+        $this->animalPersonnalites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -254,6 +261,36 @@ class Animal
             // set the owning side to null (unless already changed)
             if ($correspondance->getAnimal() === $this) {
                 $correspondance->setAnimal(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AnimalPersonnalite>
+     */
+    public function getAnimalPersonnalites(): Collection
+    {
+        return $this->animalPersonnalites;
+    }
+
+    public function addAnimalPersonnalite(AnimalPersonnalite $animalPersonnalite): static
+    {
+        if (!$this->animalPersonnalites->contains($animalPersonnalite)) {
+            $this->animalPersonnalites->add($animalPersonnalite);
+            $animalPersonnalite->setAnimal($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnimalPersonnalite(AnimalPersonnalite $animalPersonnalite): static
+    {
+        if ($this->animalPersonnalites->removeElement($animalPersonnalite)) {
+            // set the owning side to null (unless already changed)
+            if ($animalPersonnalite->getAnimal() === $this) {
+                $animalPersonnalite->setAnimal(null);
             }
         }
 
