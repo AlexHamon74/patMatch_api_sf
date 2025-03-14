@@ -2,6 +2,8 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Article;
+use App\Entity\Categorie;
 use App\Entity\User;
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -10,6 +12,9 @@ use Faker\Factory;
 
 class AppFixtures extends Fixture
 {
+
+    const CATEGORIE_NOM = ['Nourriture', 'Dressage', 'Nouvelle adption', 'Administratifs'];
+    const ARTICLE_TITRE = ['Comment nourrir son labrador ?', 'Nos conseils pour le dressage de chien.', 'Comment adopter un chat ?', 'Le guide pour les documents administratifs'];
 
     public function __construct() {}
 
@@ -28,6 +33,7 @@ class AppFixtures extends Fixture
             ->setPrenom('Admin')
             ->setDateDeNaissance(new DateTimeImmutable())
             ->setMisAJourLe(new DateTimeImmutable());
+            
         $manager->persist($admin_user);
 
         $eleveur_user = new User();
@@ -38,6 +44,7 @@ class AppFixtures extends Fixture
             ->setPrenom('Eleveur')
             ->setDateDeNaissance(new DateTimeImmutable())
             ->setMisAJourLe(new DateTimeImmutable());
+
         $manager->persist($eleveur_user);
 
         $particulier_user = new User();
@@ -48,8 +55,35 @@ class AppFixtures extends Fixture
             ->setPrenom('Particulier')
             ->setDateDeNaissance(new DateTimeImmutable())
             ->setMisAJourLe(new DateTimeImmutable());
+
         $manager->persist($particulier_user);
 
+        // --------------------------------
+        // Ajout des Articles et catégories
+        // --------------------------------
+
+        $categories = [];
+        foreach(self::CATEGORIE_NOM as $categorie_nom) {
+        $categorie = new Categorie();
+            $categorie->setNom($categorie_nom)
+            ->setDescription($faker->realTextBetween())
+            ->setMisAJourLe(new DateTimeImmutable());
+
+            $manager->persist($categorie);
+            $categories[$categorie_nom] = $categorie;
+        }
+
+        foreach(self::ARTICLE_TITRE as $article_titre) {
+            $article = new Article();
+            $article->setUtilisateurId($eleveur_user)
+            ->setCategorieId($faker->randomElement($categories))
+            ->setTitre($article_titre)
+            ->setContenu($faker->realTextBetween())
+            ->setDateDeCreation(new DateTimeImmutable())
+            ->setMisAJourLe(new DateTimeImmutable());
+
+            $manager->persist($article);
+        }
 
         $manager->flush();
     }
