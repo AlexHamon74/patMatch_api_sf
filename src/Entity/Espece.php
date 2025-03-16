@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EspeceRepository::class)]
 #[ApiResource]
@@ -19,6 +20,7 @@ class Espece
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::TEXT)]

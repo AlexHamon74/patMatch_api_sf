@@ -64,7 +64,6 @@ class Animal
     private ?string $animalImage = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
     private ?\DateTimeImmutable $misAJourLe = null;
 
     #[ORM\ManyToOne(inversedBy: 'animals')]
@@ -83,6 +82,7 @@ class Animal
     private Collection $animalPersonnalites;
 
     #[ORM\ManyToOne(inversedBy: 'animals')]
+    #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
     private ?Race $race = null;
 
     public function __construct()

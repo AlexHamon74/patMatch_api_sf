@@ -75,7 +75,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $photoProfil = null;
 
     #[ORM\Column]
-    #[Assert\datetime(message : "Ce champs n'est pas valide.")]
     private ?\DateTimeImmutable $misAJourLe = null;
 
     #[ORM\Column(nullable: true)]
