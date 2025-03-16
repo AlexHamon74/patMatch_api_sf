@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\DocumentAdministratifRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: DocumentAdministratifRepository::class)]
 #[ORM\Table(name: '`documentAdministratif`')]
@@ -15,12 +16,14 @@ class DocumentAdministratif
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['user:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'documentAdministratifs')]
     private ?User $utilisateur = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['user:read'])]
     private ?string $cheminDocument = null;
 
     public function getId(): ?int

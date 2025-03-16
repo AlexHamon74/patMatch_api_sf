@@ -12,28 +12,35 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Serializer\Annotation\Context;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[UniqueEntity(fields: ['email'], message: 'Cet email existe déjà')]
+#[ApiResource(normalizationContext:['groups' => ['user:read']])]
 #[ApiResource]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['user:read', 'correspondance:read', 'article:read', 'animal:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
     #[Assert\email(message : "L'email n'est pas valide.")]
+    #[Groups(['user:read', 'correspondance:read'])]
     private ?string $email = null;
 
     /**
      * @var list<string> The user roles
      */
     #[ORM\Column]
+    #[Groups(['user:read'])]
     private array $roles = [];
 
     /**
@@ -41,67 +48,83 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
+    #[Groups(['user:read'])]
     private ?string $password = null;
 
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
+    #[Groups(['user:read', 'correspondance:read', 'article:read', 'animal:read'])]
     private ?string $nom = null;
 
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
+    #[Groups(['user:read', 'correspondance:read', 'article:read', 'animal:read'])]
     private ?string $prenom = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
     #[Assert\date(message : "Ce champs n'est pas valide.")]
+    #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'd/m/Y'])]
+    #[Groups(['user:read'])]
     private ?\DateTimeImmutable $dateDeNaissance = null;
 
     #[ORM\Column(length: 10, nullable: true)]
+    #[Groups(['user:read'])]
     private ?string $numeroDeTelephone = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['user:read'])]
     private ?string $description = null;
 
     #[ORM\Column(length: 150, nullable: true)]
+    #[Groups(['user:read'])]
     private ?string $adresse = null;
 
     #[ORM\Column(length: 5, nullable: true)]
+    #[Groups(['user:read'])]
     private ?string $codePostal = null;
 
     #[ORM\Column(length: 100, nullable: true)]
+    #[Groups(['user:read'])]
     private ?string $ville = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['user:read', 'correspondance:read'])]
     private ?string $photoProfil = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $misAJourLe = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['user:read'])]
     private ?array $interetAnimalier = null;
 
     /**
      * @var Collection<int, Article>
      */
     #[ORM\OneToMany(targetEntity: Article::class, mappedBy: 'utilisateur')]
+    #[Groups(['user:read'])]
     private Collection $articles;
 
     /**
      * @var Collection<int, DocumentAdministratif>
      */
     #[ORM\OneToMany(targetEntity: DocumentAdministratif::class, mappedBy: 'utilisateur')]
+    #[Groups(['user:read'])]
     private Collection $documentAdministratifs;
 
     /**
      * @var Collection<int, Animal>
      */
     #[ORM\OneToMany(targetEntity: Animal::class, mappedBy: 'utilisateur')]
+    #[Groups(['user:read'])]
     private Collection $animals;
 
     /**
      * @var Collection<int, Correspondance>
      */
     #[ORM\OneToMany(targetEntity: Correspondance::class, mappedBy: 'user')]
+    #[Groups(['user:read'])]
     private Collection $correspondances;
 
     public function __construct()
@@ -331,7 +354,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->articles->contains($article)) {
             $this->articles->add($article);
-            $article->setUtilisateurId($this);
+            $article->setUtilisateur($this);
         }
 
         return $this;
@@ -341,8 +364,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->articles->removeElement($article)) {
             // set the owning side to null (unless already changed)
-            if ($article->getUtilisateurId() === $this) {
-                $article->setUtilisateurId(null);
+            if ($article->getUtilisateur() === $this) {
+                $article->setUtilisateur(null);
             }
         }
 

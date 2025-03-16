@@ -110,8 +110,8 @@ class AppFixtures extends Fixture
 
         foreach(self::ARTICLE_TITRE as $article_titre) {
             $article = new Article();
-            $article->setUtilisateurId($faker->randomElement($eleveurs))
-            ->setCategorieId($faker->randomElement($categories))
+            $article->setUtilisateur($faker->randomElement($eleveurs))
+            ->setCategorie($faker->randomElement($categories))
             ->setTitre($article_titre)
             ->setContenu($faker->realTextBetween())
             ->setDateDeCreation(new DateTimeImmutable())

@@ -8,28 +8,35 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EspeceRepository::class)]
+#[ApiResource(normalizationContext:['groups' => ['espece:read']])]
+
 #[ApiResource]
 class Espece
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['espece:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
+    #[Groups(['espece:read'])]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['espece:read'])]
     private ?string $especeImage = null;
 
     /**
      * @var Collection<int, Race>
      */
     #[ORM\OneToMany(targetEntity: Race::class, mappedBy: 'espece')]
+    #[Groups(['espece:read'])]
     private Collection $races;
 
     #[ORM\Column]

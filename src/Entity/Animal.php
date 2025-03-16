@@ -11,78 +11,98 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-
+use Symfony\Component\Serializer\Annotation\Context;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 #[ORM\Entity(repositoryClass: AnimalRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['numeroIdentification'])]
 #[UniqueEntity(fields: ['numeroIdentification'], message: 'Ce numéro d\'identification existe déjà')]
+#[ApiResource(normalizationContext:['groups' => ['animal:read']])]
+
 #[ApiResource]
 class Animal
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['user:read', 'animal:read', 'correspondance:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
+    #[Groups(['user:read', 'animal:read', 'correspondance:read'])]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
     #[Assert\date(message : "Ce champs n'est pas valide.")]
+    #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'd/m/Y'])]
+    #[Groups(['user:read', 'animal:read'])]
     private ?\DateTimeImmutable $dateDeNaissance = null;
 
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
+    #[Groups(['user:read', 'animal:read'])]
     private ?string $couleur = null;
 
     #[ORM\Column]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
+    #[Groups(['user:read', 'animal:read'])]
     private ?int $numeroIdentification = null;
 
     #[ORM\Column]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
+    #[Groups(['user:read', 'animal:read'])]
     private ?int $poids = null;
 
     #[ORM\Column]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
+    #[Groups(['user:read', 'animal:read'])]
     private ?int $taille = null;
 
     #[ORM\Column(enumType: SexeAnimal::class)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
+    #[Groups(['user:read', 'animal:read'])]
     private ?SexeAnimal $sexe = null;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
+    #[Groups(['user:read', 'animal:read'])]
     private ?string $infosSante = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['user:read', 'animal:read'])]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['user:read', 'animal:read', 'correspondance:read'])]
     private ?string $animalImage = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $misAJourLe = null;
 
     #[ORM\ManyToOne(inversedBy: 'animals')]
+    #[Groups(['animal:read'])]
     private ?User $utilisateur = null;
 
     /**
      * @var Collection<int, Correspondance>
      */
     #[ORM\OneToMany(targetEntity: Correspondance::class, mappedBy: 'animal')]
+    #[Groups(['user:read', 'animal:read'])]
     private Collection $correspondances;
 
     /**
      * @var Collection<int, AnimalPersonnalite>
      */
     #[ORM\OneToMany(targetEntity: AnimalPersonnalite::class, mappedBy: 'animal')]
+    #[Groups(['user:read', 'animal:read'])]
     private Collection $animalPersonnalites;
 
     #[ORM\ManyToOne(inversedBy: 'animals')]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
+    #[Groups(['user:read', 'animal:read'])]
     private ?Race $race = null;
 
     public function __construct()

@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\AnimalPersonnaliteRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AnimalPersonnaliteRepository::class)]
 #[ApiResource]
@@ -19,6 +20,7 @@ class AnimalPersonnalite
     private ?Animal $animal = null;
 
     #[ORM\ManyToOne(inversedBy: 'animalPersonnalites')]
+    #[Groups(['animal:read', 'user:read'])]
     private ?Personnalite $personnalite = null;
 
     public function getId(): ?int

@@ -6,37 +6,49 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ArticleRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Context;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
+#[ApiResource(normalizationContext:['groups' => ['article:read']])]
 #[ApiResource]
 class Article
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['user:read', 'article:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'articles')]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
+    #[Groups(['article:read'])]
     private ?User $utilisateur = null;
 
     #[ORM\ManyToOne(inversedBy: 'articles')]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
+    #[Groups(['user:read', 'article:read'])]
     private ?Categorie $categorie = null;
 
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
+    #[Groups(['user:read', 'article:read'])]
     private ?string $titre = null;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
+    #[Groups(['user:read', 'article:read'])]
     private ?string $contenu = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
+    #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'd/m/Y'])]
+    #[Groups(['user:read', 'article:read'])]
     private ?\DateTimeImmutable $dateDeCreation = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['user:read', 'article:read'])]
     private ?string $articleImage = null;
 
     #[ORM\Column]
@@ -47,24 +59,24 @@ class Article
         return $this->id;
     }
 
-    public function getUtilisateurId(): ?User
+    public function getUtilisateur(): ?User
     {
         return $this->utilisateur;
     }
 
-    public function setUtilisateurId(?User $utilisateur): static
+    public function setUtilisateur(?User $utilisateur): static
     {
         $this->utilisateur = $utilisateur;
 
         return $this;
     }
 
-    public function getCategorieId(): ?Categorie
+    public function getCategorie(): ?Categorie
     {
         return $this->categorie;
     }
 
-    public function setCategorieId(?Categorie $categorie): static
+    public function setCategorie(?Categorie $categorie): static
     {
         $this->categorie = $categorie;
 

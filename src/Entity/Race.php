@@ -8,15 +8,18 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RaceRepository::class)]
+#[ApiResource(normalizationContext:['groups' => ['race:read']])]
 #[ApiResource]
 class Race
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['race:read',  'animal:read', 'espece:read' , 'user:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'races')]
@@ -25,13 +28,16 @@ class Race
 
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
+    #[Groups(['race:read', 'animal:read', 'espece:read' , 'user:read'])]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['race:read', 'espece:read' , 'user:read'])]
     private ?string $raceImage = null;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
+    #[Groups(['race:read'])]
     private ?string $description = null;
 
     #[ORM\Column]
@@ -41,6 +47,7 @@ class Race
      * @var Collection<int, Animal>
      */
     #[ORM\OneToMany(targetEntity: Animal::class, mappedBy: 'race')]
+    #[Groups(['race:read'])]
     private Collection $animals;
 
     public function __construct()

@@ -8,26 +8,32 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategorieRepository::class)]
+#[ApiResource(normalizationContext:['groups' => ['categorie:read']])]
 #[ApiResource]
 class Categorie
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['categorie:read', 'article:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
+    #[Groups(['categorie:read', 'article:read'])]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
+    #[Groups(['categorie:read'])]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['categorie:read'])]
     private ?string $categorieImage = null;
 
     #[ORM\Column]
@@ -37,6 +43,7 @@ class Categorie
      * @var Collection<int, Article>
      */
     #[ORM\OneToMany(targetEntity: Article::class, mappedBy: 'categorie')]
+    #[Groups(['categorie:read'])]
     private Collection $articles;
 
     public function __construct()
@@ -109,7 +116,7 @@ class Categorie
     {
         if (!$this->articles->contains($article)) {
             $this->articles->add($article);
-            $article->setCategorieId($this);
+            $article->setCategorie($this);
         }
 
         return $this;
@@ -119,8 +126,8 @@ class Categorie
     {
         if ($this->articles->removeElement($article)) {
             // set the owning side to null (unless already changed)
-            if ($article->getCategorieId() === $this) {
-                $article->setCategorieId(null);
+            if ($article->getCategorie() === $this) {
+                $article->setCategorie(null);
             }
         }
 
