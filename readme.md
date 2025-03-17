@@ -9,7 +9,16 @@ Création de l'API pour l'application Pat'Match en cours.
 
 ## Introduction 🎬
 
-todo
+Pat’Match est une application web qui permet de faciliter la rencontre entre les bons
+adoptants et les bons animaux en tenant compte des modes de vie, des caractères, des
+besoins et des attentes de chacun. Cette plateforme met en lien des éleveurs/refuges qui
+souhaitent vendre leurs animaux et des particuliers qui souhaitent adopter un animal de
+compagnie via des rencontres et des matchs, comme une application de rencontre, mais
+pour créer des liens qui durent entre un animal et un adoptant.
+L’application web est intuitive et facile à utiliser, qui permet d’accompagner des adoptants et
+des refuges, de l’inscription aux suivis des adoptions. Elle fonctionne par rapport à des
+fiches profil sur chaque animal, des informations et des conseils pratiques sur les animaux.
+Dès lors que le profil d’un particulier est intéressé par celui d’un animal, un match est créé.
 
 ---
 
