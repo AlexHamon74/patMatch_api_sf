@@ -13,7 +13,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategorieRepository::class)]
 #[ApiResource(normalizationContext:['groups' => ['categorie:read']])]
-#[ApiResource]
 class Categorie
 {
     #[ORM\Id]
@@ -35,9 +34,6 @@ class Categorie
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups(['categorie:read'])]
     private ?string $categorieImage = null;
-
-    #[ORM\Column]
-    private ?\DateTimeImmutable $misAJourLe = null;
 
     /**
      * @var Collection<int, Article>
@@ -88,18 +84,6 @@ class Categorie
     public function setCategorieImage(?string $categorieImage): static
     {
         $this->categorieImage = $categorieImage;
-
-        return $this;
-    }
-
-    public function getMisAJourLe(): ?\DateTimeImmutable
-    {
-        return $this->misAJourLe;
-    }
-
-    public function setMisAJourLe(\DateTimeImmutable $misAJourLe): static
-    {
-        $this->misAJourLe = $misAJourLe;
 
         return $this;
     }

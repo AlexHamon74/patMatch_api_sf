@@ -13,8 +13,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EspeceRepository::class)]
 #[ApiResource(normalizationContext:['groups' => ['espece:read']])]
-
-#[ApiResource]
 class Espece
 {
     #[ORM\Id]
@@ -28,7 +26,7 @@ class Espece
     #[Groups(['espece:read'])]
     private ?string $nom = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups(['espece:read'])]
     private ?string $especeImage = null;
 
@@ -38,9 +36,6 @@ class Espece
     #[ORM\OneToMany(targetEntity: Race::class, mappedBy: 'espece')]
     #[Groups(['espece:read'])]
     private Collection $races;
-
-    #[ORM\Column]
-    private ?\DateTimeImmutable $misAJourLe = null;
 
     public function __construct()
     {
@@ -69,7 +64,7 @@ class Espece
         return $this->especeImage;
     }
 
-    public function setEspeceImage(string $especeImage): static
+    public function setEspeceImage(?string $especeImage): static
     {
         $this->especeImage = $especeImage;
 
@@ -102,18 +97,6 @@ class Espece
                 $race->setEspece(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getMisAJourLe(): ?\DateTimeImmutable
-    {
-        return $this->misAJourLe;
-    }
-
-    public function setMisAJourLe(\DateTimeImmutable $misAJourLe): static
-    {
-        $this->misAJourLe = $misAJourLe;
 
         return $this;
     }

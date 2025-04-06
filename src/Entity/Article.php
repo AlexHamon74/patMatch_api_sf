@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 #[ApiResource(normalizationContext:['groups' => ['article:read']])]
-#[ApiResource]
+#[ORM\HasLifecycleCallbacks]
 class Article
 {
     #[ORM\Id]
@@ -129,6 +129,13 @@ class Article
         $this->articleImage = $articleImage;
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function updateMisAJourLe(): void
+    {
+        $this->misAJourLe = new \DateTimeImmutable();
     }
 
     public function getMisAJourLe(): ?\DateTimeImmutable

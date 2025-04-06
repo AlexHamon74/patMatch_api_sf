@@ -21,7 +21,7 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[UniqueEntity(fields: ['email'], message: 'Cet email existe déjà')]
 #[ApiResource(normalizationContext:['groups' => ['user:read']])]
-#[ApiResource]
+#[ORM\HasLifecycleCallbacks]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -318,6 +318,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function updateMisAJourLe(): void
+    {
+        $this->misAJourLe = new \DateTimeImmutable();
+    }
+
     public function getMisAJourLe(): ?\DateTimeImmutable
     {
         return $this->misAJourLe;
@@ -326,7 +333,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setMisAJourLe(\DateTimeImmutable $misAJourLe): static
     {
         $this->misAJourLe = $misAJourLe;
-
+        
         return $this;
     }
 

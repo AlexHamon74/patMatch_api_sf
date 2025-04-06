@@ -13,7 +13,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RaceRepository::class)]
 #[ApiResource(normalizationContext:['groups' => ['race:read']])]
-#[ApiResource]
 class Race
 {
     #[ORM\Id]
@@ -31,7 +30,7 @@ class Race
     #[Groups(['race:read', 'animal:read', 'espece:read' , 'user:read'])]
     private ?string $nom = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups(['race:read', 'espece:read' , 'user:read'])]
     private ?string $raceImage = null;
 
@@ -39,9 +38,6 @@ class Race
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
     #[Groups(['race:read'])]
     private ?string $description = null;
-
-    #[ORM\Column]
-    private ?\DateTimeImmutable $misAJourLe = null;
 
     /**
      * @var Collection<int, Animal>
@@ -89,7 +85,7 @@ class Race
         return $this->raceImage;
     }
 
-    public function setRaceImage(string $raceImage): static
+    public function setRaceImage(?string $raceImage): static
     {
         $this->raceImage = $raceImage;
 
@@ -104,18 +100,6 @@ class Race
     public function setDescription(string $description): static
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getMisAJourLe(): ?\DateTimeImmutable
-    {
-        return $this->misAJourLe;
-    }
-
-    public function setMisAJourLe(\DateTimeImmutable $misAJourLe): static
-    {
-        $this->misAJourLe = $misAJourLe;
 
         return $this;
     }

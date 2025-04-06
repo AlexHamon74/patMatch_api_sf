@@ -13,8 +13,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PersonnaliteRepository::class)]
 #[ApiResource(normalizationContext:['groups' => ['personnalite:read']])]
-
-#[ApiResource]
 class Personnalite
 {
     #[ORM\Id]
@@ -33,12 +31,9 @@ class Personnalite
     #[Groups(['personnalite:read'])]
     private ?string $description = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups(['personnalite:read', 'animal:read', 'user:read'])]
     private ?string $personnaliteImage = null;
-
-    #[ORM\Column]
-    private ?\DateTimeImmutable $misAJourLe = null;
 
     /**
      * @var Collection<int, AnimalPersonnalite>
@@ -85,21 +80,9 @@ class Personnalite
         return $this->personnaliteImage;
     }
 
-    public function setPersonnaliteImage(string $personnaliteImage): static
+    public function setPersonnaliteImage(?string $personnaliteImage): static
     {
         $this->personnaliteImage = $personnaliteImage;
-
-        return $this;
-    }
-
-    public function getMisAJourLe(): ?\DateTimeImmutable
-    {
-        return $this->misAJourLe;
-    }
-
-    public function setMisAJourLe(\DateTimeImmutable $misAJourLe): static
-    {
-        $this->misAJourLe = $misAJourLe;
 
         return $this;
     }

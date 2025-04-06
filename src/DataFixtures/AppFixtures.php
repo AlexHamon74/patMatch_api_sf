@@ -59,8 +59,7 @@ class AppFixtures extends Fixture
             ->setPassword('admin123')
             ->setNom('Test')
             ->setPrenom('Admin')
-            ->setDateDeNaissance(new DateTimeImmutable())
-            ->setMisAJourLe(new DateTimeImmutable());
+            ->setDateDeNaissance(new DateTimeImmutable());
 
         $manager->persist($admin_user);
 
@@ -72,8 +71,7 @@ class AppFixtures extends Fixture
                 ->setPassword('test123')
                 ->setNom('Eleveur')
                 ->setPrenom($eleveur_user_data[1])
-                ->setDateDeNaissance(new DateTimeImmutable())
-                ->setMisAJourLe(new DateTimeImmutable());
+                ->setDateDeNaissance(new DateTimeImmutable());
             
             $manager->persist($eleveur_user);
             $eleveurs[$eleveur_user_data[0]] = $eleveur_user;
@@ -87,8 +85,7 @@ class AppFixtures extends Fixture
             ->setPassword('test123')
             ->setNom('Particulier')
             ->setPrenom($particulier_user_data[1])
-            ->setDateDeNaissance(new DateTimeImmutable())
-            ->setMisAJourLe(new DateTimeImmutable());
+            ->setDateDeNaissance(new DateTimeImmutable());
             
             $manager->persist($particulier_user);
             $particuliers[$particulier_user_data[0]] = $particulier_user;
@@ -101,8 +98,7 @@ class AppFixtures extends Fixture
         foreach(self::CATEGORIE_NOM as $categorie_nom) {
         $categorie = new Categorie();
             $categorie->setNom($categorie_nom)
-            ->setDescription($faker->realTextBetween())
-            ->setMisAJourLe(new DateTimeImmutable());
+            ->setDescription($faker->realTextBetween());
 
             $manager->persist($categorie);
             $categories[$categorie_nom] = $categorie;
@@ -114,8 +110,7 @@ class AppFixtures extends Fixture
             ->setCategorie($faker->randomElement($categories))
             ->setTitre($article_titre)
             ->setContenu($faker->realTextBetween())
-            ->setDateDeCreation(new DateTimeImmutable())
-            ->setMisAJourLe(new DateTimeImmutable());
+            ->setDateDeCreation(new DateTimeImmutable());
 
             $manager->persist($article);
         }
@@ -126,8 +121,7 @@ class AppFixtures extends Fixture
         $especes = [];
         foreach (self::ESPECE_NOM as $espece_nom) {
             $espece = new Espece();
-            $espece->setNom($espece_nom)
-                ->setMisAJourLe(new DateTimeImmutable());
+            $espece->setNom($espece_nom);
 
             $manager->persist($espece);
             $especes[$espece_nom] = $espece;
@@ -138,8 +132,7 @@ class AppFixtures extends Fixture
             $race_chien = new Race();
             $race_chien->setNom($race_chien_nom)
                 ->setEspece($especes['Chien'])
-                ->setDescription($faker->realTextBetween())
-                ->setMisAJourLe(new DateTimeImmutable());
+                ->setDescription($faker->realTextBetween());
             
             $manager->persist($race_chien);
             $races_chien[$race_chien_nom] = $race_chien;
@@ -150,8 +143,7 @@ class AppFixtures extends Fixture
             $race_chat = new Race();
             $race_chat->setNom($race_chat_nom)
                 ->setEspece($especes['Chat'])
-                ->setDescription($faker->realTextBetween())
-                ->setMisAJourLe(new DateTimeImmutable());
+                ->setDescription($faker->realTextBetween());
             
             $manager->persist($race_chat);
             $races_chat[$race_chat_nom] = $race_chat;
@@ -175,8 +167,7 @@ class AppFixtures extends Fixture
         foreach(self::PERSONNALITE_NOM as $personnalite_nom) {
             $personnalite = new Personnalite();
             $personnalite->setNom($personnalite_nom)
-                ->setDescription($faker->realTextBetween())
-                ->setMisAJourLe(new DateTimeImmutable());
+                ->setDescription($faker->realTextBetween());
             
             $manager->persist($personnalite);
             $personnalites[$personnalite_nom] = $personnalite;
@@ -198,8 +189,7 @@ class AppFixtures extends Fixture
                 ->setTaille($faker->numberBetween(10, 100))
                 ->setSexe($faker->randomElement(SexeAnimal::cases()))
                 ->setInfosSante($faker->realTextBetween())
-                ->setDescription($faker->realTextBetween())
-                ->setMisAJourLe(new DateTimeImmutable());
+                ->setDescription($faker->realTextBetween());
 
             $manager->persist($animal);
             $animaux[$animal_chien_nom] = $animal;
@@ -216,8 +206,7 @@ class AppFixtures extends Fixture
                 ->setTaille($faker->numberBetween(10, 100))
                 ->setSexe($faker->randomElement(SexeAnimal::cases()))
                 ->setInfosSante($faker->realTextBetween())
-                ->setDescription($faker->realTextBetween())
-                ->setMisAJourLe(new DateTimeImmutable());
+                ->setDescription($faker->realTextBetween());
 
             $manager->persist($animal);
             $animaux[$animal_chat_nom] = $animal;

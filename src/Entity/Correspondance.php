@@ -9,8 +9,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CorrespondanceRepository::class)]
 #[ApiResource(normalizationContext:['groups' => ['correspondance:read']])]
-
-#[ApiResource]
 class Correspondance
 {
     #[ORM\Id]

@@ -19,8 +19,7 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['numeroIdentification'])]
 #[UniqueEntity(fields: ['numeroIdentification'], message: 'Ce numéro d\'identification existe déjà')]
 #[ApiResource(normalizationContext:['groups' => ['animal:read']])]
-
-#[ApiResource]
+#[ORM\HasLifecycleCallbacks]
 class Animal
 {
     #[ORM\Id]
@@ -234,6 +233,13 @@ class Animal
         $this->animalImage = $animalImage;
 
         return $this;
+    }
+
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function updateMisAJourLe(): void
+    {
+        $this->misAJourLe = new \DateTimeImmutable();
     }
 
     public function getMisAJourLe(): ?\DateTimeImmutable
