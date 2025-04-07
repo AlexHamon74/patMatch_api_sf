@@ -23,6 +23,7 @@ class Race
 
     #[ORM\ManyToOne(inversedBy: 'races')]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
+    #[Groups(['animal:read'])]
     private ?Espece $espece = null;
 
     #[ORM\Column(length: 100)]

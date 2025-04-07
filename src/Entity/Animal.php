@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Enum\SexeAnimal;
 use App\Repository\AnimalRepository;
@@ -18,7 +20,11 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 #[ORM\Entity(repositoryClass: AnimalRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['numeroIdentification'])]
 #[UniqueEntity(fields: ['numeroIdentification'], message: 'Ce numéro d\'identification existe déjà')]
-#[ApiResource(normalizationContext:['groups' => ['animal:read']])]
+#[ApiResource(
+    normalizationContext:['groups' => ['animal:read']]
+    ),
+    ApiFilter(SearchFilter::class, properties: ['nom' => 'partial', 'race.espece.nom' => 'partial', 'race.nom' => 'partial']),
+]
 #[ORM\HasLifecycleCallbacks]
 class Animal
 {
