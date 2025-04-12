@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\TypeCompte;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -72,10 +73,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read'])]
     private ?string $numeroDeTelephone = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['user:read'])]
-    private ?string $description = null;
-
     #[ORM\Column(length: 150, nullable: true)]
     #[Groups(['user:read'])]
     private ?string $adresse = null;
@@ -99,6 +96,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read'])]
     private ?array $interetAnimalier = null;
 
+    #[ORM\Column(nullable: true, enumType: TypeCompte::class)]
+    private ?TypeCompte $typeCompte = null;
+
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $nomElevageAssociation = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $numeroEnregistrement = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $aPropos = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $certificat = null;
+    
     /**
      * @var Collection<int, Article>
      */
@@ -126,6 +138,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Correspondance::class, mappedBy: 'user')]
     #[Groups(['user:read'])]
     private Collection $correspondances;
+
 
     public function __construct()
     {
@@ -254,18 +267,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setNumeroDeTelephone(?string $numeroDeTelephone): static
     {
         $this->numeroDeTelephone = $numeroDeTelephone;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): static
-    {
-        $this->description = $description;
 
         return $this;
     }
@@ -465,6 +466,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $correspondance->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTypeCompte(): ?TypeCompte
+    {
+        return $this->typeCompte;
+    }
+
+    public function setTypeCompte(?TypeCompte $typeCompte): static
+    {
+        $this->typeCompte = $typeCompte;
+
+        return $this;
+    }
+
+    public function getNomElevageAssociation(): ?string
+    {
+        return $this->nomElevageAssociation;
+    }
+
+    public function setNomElevageAssociation(?string $nomElevageAssociation): static
+    {
+        $this->nomElevageAssociation = $nomElevageAssociation;
+
+        return $this;
+    }
+
+    public function getNumeroEnregistrement(): ?string
+    {
+        return $this->numeroEnregistrement;
+    }
+
+    public function setNumeroEnregistrement(?string $numeroEnregistrement): static
+    {
+        $this->numeroEnregistrement = $numeroEnregistrement;
+
+        return $this;
+    }
+
+    public function getAPropos(): ?string
+    {
+        return $this->aPropos;
+    }
+
+    public function setAPropos(?string $aPropos): static
+    {
+        $this->aPropos = $aPropos;
+
+        return $this;
+    }
+
+    public function getCertificat(): ?string
+    {
+        return $this->certificat;
+    }
+
+    public function setCertificat(?string $certificat): static
+    {
+        $this->certificat = $certificat;
 
         return $this;
     }

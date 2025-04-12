@@ -81,7 +81,7 @@ class AppFixtures extends Fixture
         foreach(self::PARTICULIER_USER as $particulier_user_data) {
             $particulier_user = new User();
             $particulier_user->setEmail($particulier_user_data[0])
-            ->setRoles(['ROLE_PARTICULIER'])
+            ->setRoles(['ROLE_USER'])
             ->setPassword('test123')
             ->setNom('Particulier')
             ->setPrenom($particulier_user_data[1])
