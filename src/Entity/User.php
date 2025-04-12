@@ -11,12 +11,15 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Context;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
+#[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -33,7 +36,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
-    #[Assert\email(message : "L'email n'est pas valide.")]
+    #[Assert\Email(message : "L'email n'est pas valide.")]
     #[Groups(['user:read', 'correspondance:read'])]
     private ?string $email = null;
 
@@ -64,7 +67,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
-    #[Assert\date(message : "Ce champs n'est pas valide.")]
     #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'd/m/Y'])]
     #[Groups(['user:read'])]
     private ?\DateTimeImmutable $dateDeNaissance = null;
@@ -84,6 +86,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 100, nullable: true)]
     #[Groups(['user:read'])]
     private ?string $ville = null;
+
+    #[Vich\UploadableField(mapping: 'users', fileNameProperty: 'photoProfil')]
+    public ?File $photoProfilFile = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups(['user:read', 'correspondance:read'])]
@@ -315,6 +320,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhotoProfil(?string $photoProfil): static
     {
         $this->photoProfil = $photoProfil;
+
+        return $this;
+    }
+
+    public function getPhotoProfilFile(): ?File
+    {
+        return $this->photoProfilFile;
+    }
+
+    public function setPhotoProfilFile(?File $photoProfilFile): static
+    {
+        $this->photoProfilFile = $photoProfilFile;
 
         return $this;
     }
