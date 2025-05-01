@@ -6,6 +6,7 @@ use App\Entity\Animal;
 use App\Entity\AnimalPersonnalite;
 use App\Entity\Article;
 use App\Entity\Categorie;
+use App\Entity\Client;
 use App\Entity\Correspondance;
 use App\Entity\DocumentAdministratif;
 use App\Entity\Eleveur;
@@ -28,12 +29,12 @@ class AppFixtures extends Fixture
         ['josiane@eleveur.com', 'Josiane'],
         ['simone@eleveur.com', 'Simone'],
     ];
-    const PARTICULIER_USER = [
-        ['leo@particulier.com', 'Leo'],
-        ['noah@particulier.com', 'Noah'],
-        ['lina@particulier.com', 'Lina'],
-        ['enzo@particulier.com', 'Enzo'],
-        ['jade@particulier.com', 'Jade'],
+    const CLIENT_USER = [
+        ['leo@client.com', 'Leo'],
+        ['noah@client.com', 'Noah'],
+        ['lina@client.com', 'Lina'],
+        ['enzo@client.com', 'Enzo'],
+        ['jade@client.com', 'Jade'],
     ];
     const CATEGORIE_NOM = ['Nourriture', 'Dressage', 'Nouvelle adption', 'Administratifs'];
     const ARTICLE_TITRE = ['Comment nourrir son labrador ?', 'Nos conseils pour le dressage de chien.', 'Comment adopter un chat ?', 'Le guide pour les documents administratifs'];
@@ -78,18 +79,18 @@ class AppFixtures extends Fixture
             $eleveurs[$eleveur_user_data[0]] = $eleveur_user;
         }
 
-        $particuliers = [];
-        foreach(self::PARTICULIER_USER as $particulier_user_data) {
-            $particulier_user = new User();
-            $particulier_user->setEmail($particulier_user_data[0])
+        $clients = [];
+        foreach(self::CLIENT_USER as $client_user_data) {
+            $client_user = new Client();
+            $client_user->setEmail($client_user_data[0])
             ->setRoles(['ROLE_USER'])
             ->setPassword('test123')
-            ->setNom('Particulier')
-            ->setPrenom($particulier_user_data[1])
+            ->setNom('Client')
+            ->setPrenom($client_user_data[1])
             ->setDateDeNaissance(new DateTimeImmutable());
             
-            $manager->persist($particulier_user);
-            $particuliers[$particulier_user_data[0]] = $particulier_user;
+            $manager->persist($client_user);
+            $clients[$client_user_data[0]] = $client_user;
         }
 
         // --------------------------------
@@ -229,7 +230,7 @@ class AppFixtures extends Fixture
         // -----------------
         foreach($animaux as $animal) {
             $correspondance = new Correspondance();
-            $correspondance->setUser($faker->randomElement($particuliers))
+            $correspondance->setUser($faker->randomElement($clients))
                 ->setAnimal($animal);
             
             $manager->persist($correspondance);

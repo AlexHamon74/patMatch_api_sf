@@ -36,7 +36,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 // Permet de définir l'héritage de la classe User
 #[ORM\InheritanceType("JOINED")]
 #[ORM\DiscriminatorColumn(name: "discr", type: "string")]
-#[ORM\DiscriminatorMap(["user" => User::class, "eleveur" => Eleveur::class])]
+#[ORM\DiscriminatorMap(["user" => User::class, "eleveur" => Eleveur::class, "client" => Client::class])]
 
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -108,10 +108,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private ?\DateTimeImmutable $misAJourLe = null;
-
-    #[ORM\Column(nullable: true)]
-    #[Groups(['user:read'])]
-    private ?array $interetAnimalier = null;
 
     #[ORM\Column(nullable: true, enumType: TypeCompte::class)]
     private ?TypeCompte $typeCompte = null;
@@ -352,18 +348,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->misAJourLe = $misAJourLe;
         
-        return $this;
-    }
-
-    public function getInteretAnimalier(): ?array
-    {
-        return $this->interetAnimalier;
-    }
-
-    public function setInteretAnimalier(?array $interetAnimalier): static
-    {
-        $this->interetAnimalier = $interetAnimalier;
-
         return $this;
     }
 
