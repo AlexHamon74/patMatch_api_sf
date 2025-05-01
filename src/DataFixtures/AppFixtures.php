@@ -8,6 +8,7 @@ use App\Entity\Article;
 use App\Entity\Categorie;
 use App\Entity\Correspondance;
 use App\Entity\DocumentAdministratif;
+use App\Entity\Eleveur;
 use App\Entity\Espece;
 use App\Entity\Personnalite;
 use App\Entity\Race;
@@ -65,7 +66,7 @@ class AppFixtures extends Fixture
 
         $eleveurs = [];
         foreach(self::ELEVEUR_USER as $eleveur_user_data) {
-            $eleveur_user = new User();
+            $eleveur_user = new Eleveur();
             $eleveur_user->setEmail($eleveur_user_data[0])
                 ->setRoles(['ROLE_ELEVEUR'])
                 ->setPassword('test123')

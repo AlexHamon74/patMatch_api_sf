@@ -19,13 +19,25 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
+
+// Permet de gérer les ressources API et de définir les groupes de sérialisation 
+#[ApiResource(normalizationContext:['groups' => ['user:read']])]
+
+// Permet de gérer les doublons d'email
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[UniqueEntity(fields: ['email'], message: 'Cet email existe déjà')]
-#[ApiResource(normalizationContext:['groups' => ['user:read']])]
+
+// Permet de gérer les fichiers uploadés
+#[Vich\Uploadable]
 #[ORM\HasLifecycleCallbacks]
+
+// Permet de définir l'héritage de la classe User
+#[ORM\InheritanceType("JOINED")]
+#[ORM\DiscriminatorColumn(name: "discr", type: "string")]
+#[ORM\DiscriminatorMap(["user" => User::class, "eleveur" => Eleveur::class])]
+
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -103,18 +115,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(nullable: true, enumType: TypeCompte::class)]
     private ?TypeCompte $typeCompte = null;
-
-    #[ORM\Column(length: 100, nullable: true)]
-    private ?string $nomElevageAssociation = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $numeroEnregistrement = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $aPropos = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $certificat = null;
     
     /**
      * @var Collection<int, Article>
@@ -495,54 +495,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setTypeCompte(?TypeCompte $typeCompte): static
     {
         $this->typeCompte = $typeCompte;
-
-        return $this;
-    }
-
-    public function getNomElevageAssociation(): ?string
-    {
-        return $this->nomElevageAssociation;
-    }
-
-    public function setNomElevageAssociation(?string $nomElevageAssociation): static
-    {
-        $this->nomElevageAssociation = $nomElevageAssociation;
-
-        return $this;
-    }
-
-    public function getNumeroEnregistrement(): ?string
-    {
-        return $this->numeroEnregistrement;
-    }
-
-    public function setNumeroEnregistrement(?string $numeroEnregistrement): static
-    {
-        $this->numeroEnregistrement = $numeroEnregistrement;
-
-        return $this;
-    }
-
-    public function getAPropos(): ?string
-    {
-        return $this->aPropos;
-    }
-
-    public function setAPropos(?string $aPropos): static
-    {
-        $this->aPropos = $aPropos;
-
-        return $this;
-    }
-
-    public function getCertificat(): ?string
-    {
-        return $this->certificat;
-    }
-
-    public function setCertificat(?string $certificat): static
-    {
-        $this->certificat = $certificat;
 
         return $this;
     }
