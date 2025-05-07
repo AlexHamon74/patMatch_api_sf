@@ -67,18 +67,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read'])]
     private ?string $password = null;
 
-    #[ORM\Column(length: 100)]
-    #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
+    #[ORM\Column(length: 100, nullable: true)]
     #[Groups(['user:read', 'correspondance:read', 'article:read', 'animal:read'])]
     private ?string $nom = null;
 
-    #[ORM\Column(length: 100)]
-    #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
+    #[ORM\Column(length: 100, nullable: true)]
     #[Groups(['user:read', 'correspondance:read', 'article:read', 'animal:read'])]
     private ?string $prenom = null;
 
-    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
-    #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
+    #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
     #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'd/m/Y'])]
     #[Groups(['user:read'])]
     private ?\DateTimeImmutable $dateDeNaissance = null;
