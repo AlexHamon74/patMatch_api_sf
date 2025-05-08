@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Enum\TypeCompte;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -88,14 +87,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read'])]
     private ?string $adresse = null;
 
-    #[ORM\Column(length: 5, nullable: true)]
-    #[Groups(['user:read'])]
-    private ?string $codePostal = null;
-
-    #[ORM\Column(length: 100, nullable: true)]
-    #[Groups(['user:read'])]
-    private ?string $ville = null;
-
     #[Vich\UploadableField(mapping: 'users', fileNameProperty: 'photoProfil')]
     public ?File $photoProfilFile = null;
 
@@ -105,9 +96,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private ?\DateTimeImmutable $misAJourLe = null;
-
-    #[ORM\Column(nullable: true, enumType: TypeCompte::class)]
-    private ?TypeCompte $typeCompte = null;
     
     /**
      * @var Collection<int, Article>
@@ -281,30 +269,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getCodePostal(): ?string
-    {
-        return $this->codePostal;
-    }
-
-    public function setCodePostal(?string $codePostal): static
-    {
-        $this->codePostal = $codePostal;
-
-        return $this;
-    }
-
-    public function getVille(): ?string
-    {
-        return $this->ville;
-    }
-
-    public function setVille(?string $ville): static
-    {
-        $this->ville = $ville;
-
-        return $this;
-    }
-
     public function getPhotoProfil(): ?string
     {
         return $this->photoProfil;
@@ -464,18 +428,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $correspondance->setUser(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getTypeCompte(): ?TypeCompte
-    {
-        return $this->typeCompte;
-    }
-
-    public function setTypeCompte(?TypeCompte $typeCompte): static
-    {
-        $this->typeCompte = $typeCompte;
 
         return $this;
     }
