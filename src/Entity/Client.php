@@ -10,9 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ApiResource]
 class Client extends User
 {
-    #[ORM\Column(nullable: true)]
-    private ?array $interetAnimalier = null;
-
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $typeLogement = null;
 
@@ -22,17 +19,32 @@ class Client extends User
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $typeEnvironnement = null;
 
-    public function getInteretAnimalier(): ?array
-    {
-        return $this->interetAnimalier;
-    }
+    #[ORM\Column(nullable: true)]
+    private ?bool $autresAnimaux = null;
 
-    public function setInteretAnimalier(?array $interetAnimalier): static
-    {
-        $this->interetAnimalier = $interetAnimalier;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $animauxDescription = null;
 
-        return $this;
-    }
+    #[ORM\Column(nullable: true)]
+    private ?bool $presenceEnfant = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $enfantDescription = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $animauxPreferes = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $raceSouhaite = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $ageSouhaite = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $sexeSouhaite = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $niveauExperience = null;
 
     public function getTypeLogement(): ?string
     {
@@ -66,6 +78,114 @@ class Client extends User
     public function setTypeEnvironnement(?string $typeEnvironnement): static
     {
         $this->typeEnvironnement = $typeEnvironnement;
+
+        return $this;
+    }
+
+    public function isAutresAnimaux(): ?bool
+    {
+        return $this->autresAnimaux;
+    }
+
+    public function setAutresAnimaux(?bool $autresAnimaux): static
+    {
+        $this->autresAnimaux = $autresAnimaux;
+
+        return $this;
+    }
+
+    public function getAnimauxDescription(): ?string
+    {
+        return $this->animauxDescription;
+    }
+
+    public function setAnimauxDescription(?string $animauxDescription): static
+    {
+        $this->animauxDescription = $animauxDescription;
+
+        return $this;
+    }
+
+    public function isPresenceEnfant(): ?bool
+    {
+        return $this->presenceEnfant;
+    }
+
+    public function setPresenceEnfant(?bool $presenceEnfant): static
+    {
+        $this->presenceEnfant = $presenceEnfant;
+
+        return $this;
+    }
+
+    public function getEnfantDescription(): ?string
+    {
+        return $this->enfantDescription;
+    }
+
+    public function setEnfantDescription(?string $enfantDescription): static
+    {
+        $this->enfantDescription = $enfantDescription;
+
+        return $this;
+    }
+
+    public function getAnimauxPreferes(): ?string
+    {
+        return $this->animauxPreferes;
+    }
+
+    public function setAnimauxPreferes(?string $animauxPreferes): static
+    {
+        $this->animauxPreferes = $animauxPreferes;
+
+        return $this;
+    }
+
+    public function getRaceSouhaite(): ?string
+    {
+        return $this->raceSouhaite;
+    }
+
+    public function setRaceSouhaite(?string $raceSouhaite): static
+    {
+        $this->raceSouhaite = $raceSouhaite;
+
+        return $this;
+    }
+
+    public function getAgeSouhaite(): ?string
+    {
+        return $this->ageSouhaite;
+    }
+
+    public function setAgeSouhaite(?string $ageSouhaite): static
+    {
+        $this->ageSouhaite = $ageSouhaite;
+
+        return $this;
+    }
+
+    public function getSexeSouhaite(): ?string
+    {
+        return $this->sexeSouhaite;
+    }
+
+    public function setSexeSouhaite(?string $sexeSouhaite): static
+    {
+        $this->sexeSouhaite = $sexeSouhaite;
+
+        return $this;
+    }
+
+    public function getNiveauExperience(): ?string
+    {
+        return $this->niveauExperience;
+    }
+
+    public function setNiveauExperience(?string $niveauExperience): static
+    {
+        $this->niveauExperience = $niveauExperience;
 
         return $this;
     }
