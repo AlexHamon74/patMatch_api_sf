@@ -18,10 +18,31 @@ class Eleveur extends User
     private ?string $numeroEnregistrement = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $aPropos = null;
+    private ?string $presentation = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $certificat = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $adresseElevage = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $anneeCreation = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $especeProposee = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $horaireOuverture = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $conditionAdoption = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $suiviPostAdoption = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $suiviPostAdoptionDuree = null;
 
     public function getNomElevageAssociation(): ?string
     {
@@ -47,14 +68,14 @@ class Eleveur extends User
         return $this;
     }
 
-    public function getAPropos(): ?string
+    public function getPresentation(): ?string
     {
-        return $this->aPropos;
+        return $this->presentation;
     }
 
-    public function setAPropos(?string $aPropos): static
+    public function setPresentation(?string $presentation): static
     {
-        $this->aPropos = $aPropos;
+        $this->presentation = $presentation;
 
         return $this;
     }
@@ -67,6 +88,90 @@ class Eleveur extends User
     public function setCertificat(?string $certificat): static
     {
         $this->certificat = $certificat;
+
+        return $this;
+    }
+
+    public function getAdresseElevage(): ?string
+    {
+        return $this->adresseElevage;
+    }
+
+    public function setAdresseElevage(?string $adresseElevage): static
+    {
+        $this->adresseElevage = $adresseElevage;
+
+        return $this;
+    }
+
+    public function getAnneeCreation(): ?string
+    {
+        return $this->anneeCreation;
+    }
+
+    public function setAnneeCreation(?string $anneeCreation): static
+    {
+        $this->anneeCreation = $anneeCreation;
+
+        return $this;
+    }
+
+    public function getEspeceProposee(): ?string
+    {
+        return $this->especeProposee;
+    }
+
+    public function setEspeceProposee(?string $especeProposee): static
+    {
+        $this->especeProposee = $especeProposee;
+
+        return $this;
+    }
+
+    public function getHoraireOuverture(): ?string
+    {
+        return $this->horaireOuverture;
+    }
+
+    public function setHoraireOuverture(?string $horaireOuverture): static
+    {
+        $this->horaireOuverture = $horaireOuverture;
+
+        return $this;
+    }
+
+    public function getConditionAdoption(): ?string
+    {
+        return $this->conditionAdoption;
+    }
+
+    public function setConditionAdoption(?string $conditionAdoption): static
+    {
+        $this->conditionAdoption = $conditionAdoption;
+
+        return $this;
+    }
+
+    public function isSuiviPostAdoption(): ?bool
+    {
+        return $this->suiviPostAdoption;
+    }
+
+    public function setSuiviPostAdoption(?bool $suiviPostAdoption): static
+    {
+        $this->suiviPostAdoption = $suiviPostAdoption;
+
+        return $this;
+    }
+
+    public function getSuiviPostAdoptionDuree(): ?string
+    {
+        return $this->suiviPostAdoptionDuree;
+    }
+
+    public function setSuiviPostAdoptionDuree(?string $suiviPostAdoptionDuree): static
+    {
+        $this->suiviPostAdoptionDuree = $suiviPostAdoptionDuree;
 
         return $this;
     }
