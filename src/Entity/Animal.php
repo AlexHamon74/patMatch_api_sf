@@ -21,8 +21,9 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['numeroIdentification'])]
 #[UniqueEntity(fields: ['numeroIdentification'], message: 'Ce numéro d\'identification existe déjà')]
 #[ApiResource(
-    normalizationContext:['groups' => ['animal:read']]
-    ),
+    normalizationContext:['groups' => ['animal:read']],
+    denormalizationContext: ['groups' => ['animal:write']],
+),
     ApiFilter(SearchFilter::class, properties: ['nom' => 'partial', 'race.espece.nom' => 'partial', 'race.nom' => 'partial']),
 ]
 #[ORM\HasLifecycleCallbacks]
@@ -36,49 +37,49 @@ class Animal
 
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
-    #[Groups(['user:read', 'animal:read', 'correspondance:read'])]
+    #[Groups(['user:read', 'animal:read', 'animal:write', 'correspondance:read'])]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
     #[Assert\date(message : "Ce champs n'est pas valide.")]
     #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'd/m/Y'])]
-    #[Groups(['user:read', 'animal:read'])]
+    #[Groups(['user:read', 'animal:read', 'animal:write'])]
     private ?\DateTimeImmutable $dateDeNaissance = null;
 
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
-    #[Groups(['user:read', 'animal:read'])]
+    #[Groups(['user:read', 'animal:read', 'animal:write'])]
     private ?string $couleur = null;
 
     #[ORM\Column]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
-    #[Groups(['user:read', 'animal:read'])]
+    #[Groups(['user:read', 'animal:read', 'animal:write'])]
     private ?int $numeroIdentification = null;
 
     #[ORM\Column]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
-    #[Groups(['user:read', 'animal:read'])]
+    #[Groups(['user:read', 'animal:read', 'animal:write'])]
     private ?int $poids = null;
 
     #[ORM\Column]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
-    #[Groups(['user:read', 'animal:read'])]
+    #[Groups(['user:read', 'animal:read', 'animal:write'])]
     private ?int $taille = null;
 
     #[ORM\Column(enumType: SexeAnimal::class)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
-    #[Groups(['user:read', 'animal:read'])]
+    #[Groups(['user:read', 'animal:read', 'animal:write'])]
     private ?SexeAnimal $sexe = null;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
-    #[Groups(['user:read', 'animal:read'])]
+    #[Groups(['user:read', 'animal:read', 'animal:write'])]
     private ?string $infosSante = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['user:read', 'animal:read'])]
-    private ?string $description = null;
+    #[Groups(['user:read', 'animal:read', 'animal:write'])]
+    private ?string $histoire = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups(['user:read', 'animal:read', 'correspondance:read'])]
@@ -88,27 +89,70 @@ class Animal
     private ?\DateTimeImmutable $misAJourLe = null;
 
     #[ORM\ManyToOne(inversedBy: 'animals')]
-    #[Groups(['animal:read'])]
     private ?User $utilisateur = null;
 
     /**
      * @var Collection<int, Correspondance>
      */
     #[ORM\OneToMany(targetEntity: Correspondance::class, mappedBy: 'animal')]
-    #[Groups(['user:read', 'animal:read'])]
+    #[Groups(['user:read'])]
     private Collection $correspondances;
 
     /**
      * @var Collection<int, AnimalPersonnalite>
      */
     #[ORM\OneToMany(targetEntity: AnimalPersonnalite::class, mappedBy: 'animal')]
-    #[Groups(['user:read', 'animal:read'])]
+    #[Groups(['user:read', 'animal:read', 'animal:write'])]
     private Collection $animalPersonnalites;
 
     #[ORM\ManyToOne(inversedBy: 'animals')]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
-    #[Groups(['user:read', 'animal:read'])]
+    #[Groups(['user:read', 'animal:read', 'animal:write'])]
     private ?Race $race = null;
+
+    #[ORM\Column(length: 100)]
+    #[Groups(['animal:read', 'animal:write'])]
+    private ?string $statutVaccination = null;
+
+    #[ORM\Column(length: 100)]
+    #[Groups(['animal:read', 'animal:write'])]
+    private ?string $statutSterilisation = null;
+
+    #[ORM\Column(length: 100)]
+    #[Groups(['animal:read', 'animal:write'])]
+    private ?string $typeAlimentation = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['animal:read', 'animal:write'])]
+    private ?string $typeAlimentationDetails = null;
+
+    #[ORM\Column(length: 255)]
+    #[Groups(['animal:read', 'animal:write'])]
+    private ?string $niveauEnergie = null;
+
+    #[ORM\Column(length: 100)]
+    #[Groups(['animal:read', 'animal:write'])]
+    private ?string $sociabilite = null;
+
+    #[ORM\Column(length: 100)]
+    #[Groups(['animal:read', 'animal:write'])]
+    private ?string $education = null;
+
+    #[ORM\Column(length: 100)]
+    #[Groups(['animal:read', 'animal:write'])]
+    private ?string $typeLogement = null;
+
+    #[ORM\Column(length: 100)]
+    #[Groups(['animal:read', 'animal:write'])]
+    private ?string $familleIdeale = null;
+
+    #[ORM\Column]
+    #[Groups(['animal:read', 'animal:write'])]
+    private ?float $prix = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['animal:read', 'animal:write'])]
+    private ?string $infosSupplementaires = null;
 
     public function __construct()
     {
@@ -217,14 +261,14 @@ class Animal
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getHistoire(): ?string
     {
-        return $this->description;
+        return $this->histoire;
     }
 
-    public function setDescription(?string $description): static
+    public function setHistoire(?string $histoire): static
     {
-        $this->description = $description;
+        $this->histoire = $histoire;
 
         return $this;
     }
@@ -340,6 +384,138 @@ class Animal
     public function setRace(?Race $race): static
     {
         $this->race = $race;
+
+        return $this;
+    }
+
+    public function getStatutVaccination(): ?string
+    {
+        return $this->statutVaccination;
+    }
+
+    public function setStatutVaccination(string $statutVaccination): static
+    {
+        $this->statutVaccination = $statutVaccination;
+
+        return $this;
+    }
+
+    public function getStatutSterilisation(): ?string
+    {
+        return $this->statutSterilisation;
+    }
+
+    public function setStatutSterilisation(string $statutSterilisation): static
+    {
+        $this->statutSterilisation = $statutSterilisation;
+
+        return $this;
+    }
+
+    public function getTypeAlimentation(): ?string
+    {
+        return $this->typeAlimentation;
+    }
+
+    public function setTypeAlimentation(string $typeAlimentation): static
+    {
+        $this->typeAlimentation = $typeAlimentation;
+
+        return $this;
+    }
+
+    public function getTypeAlimentationDetails(): ?string
+    {
+        return $this->typeAlimentationDetails;
+    }
+
+    public function setTypeAlimentationDetails(?string $typeAlimentationDetails): static
+    {
+        $this->typeAlimentationDetails = $typeAlimentationDetails;
+
+        return $this;
+    }
+
+    public function getNiveauEnergie(): ?string
+    {
+        return $this->niveauEnergie;
+    }
+
+    public function setNiveauEnergie(string $niveauEnergie): static
+    {
+        $this->niveauEnergie = $niveauEnergie;
+
+        return $this;
+    }
+
+    public function getSociabilite(): ?string
+    {
+        return $this->sociabilite;
+    }
+
+    public function setSociabilite(string $sociabilite): static
+    {
+        $this->sociabilite = $sociabilite;
+
+        return $this;
+    }
+
+    public function getEducation(): ?string
+    {
+        return $this->education;
+    }
+
+    public function setEducation(string $education): static
+    {
+        $this->education = $education;
+
+        return $this;
+    }
+
+    public function getTypeLogement(): ?string
+    {
+        return $this->typeLogement;
+    }
+
+    public function setTypeLogement(string $typeLogement): static
+    {
+        $this->typeLogement = $typeLogement;
+
+        return $this;
+    }
+
+    public function getFamilleIdeale(): ?string
+    {
+        return $this->familleIdeale;
+    }
+
+    public function setFamilleIdeale(string $familleIdeale): static
+    {
+        $this->familleIdeale = $familleIdeale;
+
+        return $this;
+    }
+
+    public function getPrix(): ?float
+    {
+        return $this->prix;
+    }
+
+    public function setPrix(float $prix): static
+    {
+        $this->prix = $prix;
+
+        return $this;
+    }
+
+    public function getInfosSupplementaires(): ?string
+    {
+        return $this->infosSupplementaires;
+    }
+
+    public function setInfosSupplementaires(?string $infosSupplementaires): static
+    {
+        $this->infosSupplementaires = $infosSupplementaires;
 
         return $this;
     }

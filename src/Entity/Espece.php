@@ -23,7 +23,7 @@ class Espece
 
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
-    #[Groups(['espece:read', 'animal:read'])]
+    #[Groups(['espece:read', 'animal:read', 'animal:write'])]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
