@@ -112,13 +112,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $documentAdministratifs;
 
     /**
-     * @var Collection<int, Animal>
-     */
-    #[ORM\OneToMany(targetEntity: Animal::class, mappedBy: 'utilisateur')]
-    #[Groups(['user:read'])]
-    private Collection $animals;
-
-    /**
      * @var Collection<int, Correspondance>
      */
     #[ORM\OneToMany(targetEntity: Correspondance::class, mappedBy: 'user')]
@@ -130,7 +123,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->articles = new ArrayCollection();
         $this->documentAdministratifs = new ArrayCollection();
-        $this->animals = new ArrayCollection();
         $this->correspondances = new ArrayCollection();
     }
 
@@ -366,36 +358,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($documentAdministratif->getUtilisateur() === $this) {
                 $documentAdministratif->setUtilisateur(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Animal>
-     */
-    public function getAnimals(): Collection
-    {
-        return $this->animals;
-    }
-
-    public function addAnimal(Animal $animal): static
-    {
-        if (!$this->animals->contains($animal)) {
-            $this->animals->add($animal);
-            $animal->setUtilisateur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAnimal(Animal $animal): static
-    {
-        if ($this->animals->removeElement($animal)) {
-            // set the owning side to null (unless already changed)
-            if ($animal->getUtilisateur() === $this) {
-                $animal->setUtilisateur(null);
             }
         }
 

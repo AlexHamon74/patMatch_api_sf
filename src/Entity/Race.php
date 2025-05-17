@@ -23,12 +23,12 @@ class Race
 
     #[ORM\ManyToOne(inversedBy: 'races')]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
-    #[Groups(['animal:read', 'animal:write'])]
+    #[Groups(['animal:read'])]
     private ?Espece $espece = null;
 
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
-    #[Groups(['race:read', 'animal:read', 'animal:write', 'espece:read' , 'user:read'])]
+    #[Groups(['race:read', 'animal:read', 'espece:read' , 'user:read'])]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]

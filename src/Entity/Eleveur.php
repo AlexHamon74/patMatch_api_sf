@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\EleveurRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -43,6 +45,18 @@ class Eleveur extends User
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $suiviPostAdoptionDuree = null;
+
+    /**
+     * @var Collection<int, Animal>
+     */
+    #[ORM\OneToMany(targetEntity: Animal::class, mappedBy: 'eleveur', orphanRemoval: true)]
+    private Collection $animals;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->animals = new ArrayCollection();
+    }
 
     public function getNomElevageAssociation(): ?string
     {
@@ -172,6 +186,36 @@ class Eleveur extends User
     public function setSuiviPostAdoptionDuree(?string $suiviPostAdoptionDuree): static
     {
         $this->suiviPostAdoptionDuree = $suiviPostAdoptionDuree;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Animal>
+     */
+    public function getAnimals(): Collection
+    {
+        return $this->animals;
+    }
+
+    public function addAnimal(Animal $animal): static
+    {
+        if (!$this->animals->contains($animal)) {
+            $this->animals->add($animal);
+            $animal->setEleveur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnimal(Animal $animal): static
+    {
+        if ($this->animals->removeElement($animal)) {
+            // set the owning side to null (unless already changed)
+            if ($animal->getEleveur() === $this) {
+                $animal->setEleveur(null);
+            }
+        }
 
         return $this;
     }
