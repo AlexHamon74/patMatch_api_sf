@@ -5,6 +5,11 @@ namespace App\Entity;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Patch;
 use App\Enum\SexeAnimal;
 use App\Repository\AnimalRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -20,11 +25,23 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 #[ORM\Entity(repositoryClass: AnimalRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['numeroIdentification'])]
 #[UniqueEntity(fields: ['numeroIdentification'], message: "Ce numéro d'identification existe déjà")]
-#[ApiResource(
-    normalizationContext:['groups' => ['animal:read']],
-    denormalizationContext: ['groups' => ['animal:write']],
-),
-    ApiFilter(SearchFilter::class, properties: ['nom' => 'partial', 'race.espece.nom' => 'partial', 'race.nom' => 'partial']),
+#[
+    ApiResource(
+        normalizationContext:['groups' => ['animal:read']],
+        denormalizationContext: ['groups' => ['animal:write']],
+        operations: [
+            new GetCollection(),
+            new Get(),
+            new Post(security: "is_granted('ROLE_ELEVEUR') or is_granted('ROLE_ADMIN')"),
+            new Patch(),
+            new Delete()
+        ]
+    ),
+    ApiFilter(SearchFilter::class, properties: [
+        'nom' => 'partial', 
+        'race.espece.nom' => 'partial', 
+        'race.nom' => 'partial'
+    ]),
 ]
 #[ORM\HasLifecycleCallbacks]
 class Animal
