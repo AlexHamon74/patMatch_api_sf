@@ -8,42 +8,54 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: EleveurRepository::class)]
-#[ApiResource]
+#[ApiResource(normalizationContext:['groups' => ['eleveur:read']])]
 class Eleveur extends User
 {
     #[ORM\Column(length: 100, nullable: true)]
+    #[Groups(['eleveur:read'])]
     private ?string $nomElevageAssociation = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['eleveur:read'])]
     private ?string $numeroEnregistrement = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['eleveur:read'])]
     private ?string $presentation = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['eleveur:read'])]
     private ?string $certificat = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['eleveur:read'])]
     private ?string $adresseElevage = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['eleveur:read'])]
     private ?string $anneeCreation = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['eleveur:read'])]
     private ?string $especeProposee = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['eleveur:read'])]
     private ?string $horaireOuverture = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['eleveur:read'])]
     private ?string $conditionAdoption = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['eleveur:read'])]
     private ?bool $suiviPostAdoption = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['eleveur:read'])]
     private ?string $suiviPostAdoptionDuree = null;
 
     /**

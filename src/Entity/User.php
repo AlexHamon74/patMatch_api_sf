@@ -15,6 +15,11 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Context;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Delete;
+use App\Controller\MeController;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -22,7 +27,24 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: '`user`')]
 
 // Permet de gérer les ressources API et de définir les groupes de sérialisation 
-#[ApiResource(normalizationContext:['groups' => ['user:read']])]
+#[
+    ApiResource(
+            operations: [
+                new Get(
+                    name: 'me',
+                    uriTemplate: '/me',
+                    controller: MeController::class,
+                    security: "is_granted('IS_AUTHENTICATED_FULLY')",
+                    read: false,
+                    output: User::class,
+                ),
+                new Get,
+                new Post(),
+                new Patch(),
+                new Delete(),
+        ]
+    )
+]
 
 // Permet de gérer les doublons d'email
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -42,20 +64,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['user:read', 'correspondance:read', 'article:read', 'animal:read'])]
+    #[Groups(['client:read', 'eleveur:read', 'correspondance:read', 'article:read', 'animal:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
     #[Assert\Email(message : "L'email n'est pas valide.")]
-    #[Groups(['user:read', 'correspondance:read'])]
+    #[Groups(['client:read', 'eleveur:read', 'correspondance:read'])]
     private ?string $email = null;
 
     /**
      * @var list<string> The user roles
      */
     #[ORM\Column]
-    #[Groups(['user:read'])]
     private array $roles = [];
 
     /**
@@ -63,35 +84,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
-    #[Groups(['user:read'])]
     private ?string $password = null;
 
     #[ORM\Column(length: 100, nullable: true)]
-    #[Groups(['user:read', 'correspondance:read', 'article:read', 'animal:read'])]
+    #[Groups(['client:read', 'eleveur:read', 'correspondance:read', 'article:read', 'animal:read'])]
     private ?string $nom = null;
 
     #[ORM\Column(length: 100, nullable: true)]
-    #[Groups(['user:read', 'correspondance:read', 'article:read', 'animal:read'])]
+    #[Groups(['client:read', 'eleveur:read', 'correspondance:read', 'article:read', 'animal:read'])]
     private ?string $prenom = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
     #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'd/m/Y'])]
-    #[Groups(['user:read'])]
+    #[Groups(['client:read', 'eleveur:read'])]
     private ?\DateTimeImmutable $dateDeNaissance = null;
 
     #[ORM\Column(length: 10, nullable: true)]
-    #[Groups(['user:read'])]
+    #[Groups(['client:read', 'eleveur:read'])]
     private ?string $numeroDeTelephone = null;
 
     #[ORM\Column(length: 150, nullable: true)]
-    #[Groups(['user:read'])]
+    #[Groups(['client:read', 'eleveur:read'])]
     private ?string $adresse = null;
 
     #[Vich\UploadableField(mapping: 'users', fileNameProperty: 'photoProfil')]
     public ?File $photoProfilFile = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['user:read', 'correspondance:read'])]
+    #[Groups(['client:read', 'eleveur:read', 'correspondance:read'])]
     private ?string $photoProfil = null;
 
     #[ORM\Column]
@@ -101,21 +121,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var Collection<int, Article>
      */
     #[ORM\OneToMany(targetEntity: Article::class, mappedBy: 'utilisateur')]
-    #[Groups(['user:read'])]
     private Collection $articles;
 
     /**
      * @var Collection<int, DocumentAdministratif>
      */
     #[ORM\OneToMany(targetEntity: DocumentAdministratif::class, mappedBy: 'utilisateur')]
-    #[Groups(['user:read'])]
     private Collection $documentAdministratifs;
 
     /**
      * @var Collection<int, Correspondance>
      */
     #[ORM\OneToMany(targetEntity: Correspondance::class, mappedBy: 'user')]
-    #[Groups(['user:read'])]
     private Collection $correspondances;
 
 

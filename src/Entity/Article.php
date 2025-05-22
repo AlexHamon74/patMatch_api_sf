@@ -19,7 +19,7 @@ class Article
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['user:read', 'article:read'])]
+    #[Groups(['article:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'articles')]
@@ -29,26 +29,26 @@ class Article
 
     #[ORM\ManyToOne(inversedBy: 'articles')]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
-    #[Groups(['user:read', 'article:read'])]
+    #[Groups(['article:read'])]
     private ?Categorie $categorie = null;
 
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
-    #[Groups(['user:read', 'article:read'])]
+    #[Groups(['article:read'])]
     private ?string $titre = null;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
-    #[Groups(['user:read', 'article:read'])]
+    #[Groups(['article:read'])]
     private ?string $contenu = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'd/m/Y'])]
-    #[Groups(['user:read', 'article:read'])]
+    #[Groups(['article:read'])]
     private ?\DateTimeImmutable $dateDeCreation = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['user:read', 'article:read'])]
+    #[Groups(['article:read'])]
     private ?string $articleImage = null;
 
     #[ORM\Column]

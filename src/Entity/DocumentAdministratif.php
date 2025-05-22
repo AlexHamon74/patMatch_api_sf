@@ -16,14 +16,12 @@ class DocumentAdministratif
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['user:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'documentAdministratifs')]
     private ?User $utilisateur = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['user:read'])]
     private ?string $cheminDocument = null;
 
     public function getId(): ?int

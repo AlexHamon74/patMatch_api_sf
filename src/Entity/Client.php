@@ -5,45 +5,58 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ClientRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
-#[ApiResource]
+#[ApiResource(normalizationContext: ['groups' => ['client:read']])]
 class Client extends User
 {
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['client:read'])]
     private ?string $typeLogement = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['client:read'])]
     private ?string $espaceExterieur = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['client:read'])]
     private ?string $typeEnvironnement = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['client:read'])]
     private ?bool $autresAnimaux = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['client:read'])]
     private ?string $animauxDescription = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['client:read'])]
     private ?bool $presenceEnfant = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['client:read'])]
     private ?string $enfantDescription = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['client:read'])]
     private ?string $animauxPreferes = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['client:read'])]
     private ?string $raceSouhaite = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['client:read'])]
     private ?string $ageSouhaite = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['client:read'])]
     private ?string $sexeSouhaite = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['client:read'])]
     private ?string $niveauExperience = null;
 
     public function getTypeLogement(): ?string

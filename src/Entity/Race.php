@@ -18,7 +18,7 @@ class Race
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['race:read',  'animal:read', 'espece:read' , 'user:read'])]
+    #[Groups(['race:read',  'animal:read', 'espece:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'races')]
@@ -28,11 +28,11 @@ class Race
 
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
-    #[Groups(['race:read', 'animal:read', 'espece:read' , 'user:read'])]
+    #[Groups(['race:read', 'animal:read', 'espece:read'])]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['race:read', 'espece:read' , 'user:read'])]
+    #[Groups(['race:read', 'espece:read'])]
     private ?string $raceImage = null;
 
     #[ORM\Column(type: Types::TEXT)]
