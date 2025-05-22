@@ -70,7 +70,19 @@ class AppFixtures extends Fixture
                 ->setPassword('test123')
                 ->setNom('Eleveur')
                 ->setPrenom($eleveur_user_data[1])
-                ->setDateDeNaissance(new DateTimeImmutable());
+                ->setDateDeNaissance(new DateTimeImmutable())
+                ->setNumeroDeTelephone("0102030405")
+                ->setAdresse($faker->address())
+                ->setNomElevageAssociation($faker->company())
+                ->setNumeroEnregistrement($faker->numberBetween(1000000, 10000000))
+                ->setPresentation($faker->realTextBetween(10, 80))
+                ->setAdresseElevage($faker->address())
+                ->setAnneeCreation($faker->year())
+                ->setEspeceProposee($faker->randomElement(['Chien', 'Chat']))
+                ->setHoraireOuverture($faker->time())
+                ->setConditionAdoption($faker->realTextBetween(10, 80))
+                ->setSuiviPostAdoption(1)
+                ->setSuiviPostAdoptionDuree($faker->realTextBetween(10, 80));
             
             $manager->persist($eleveur_user);
             $eleveurs[$eleveur_user_data[0]] = $eleveur_user;
@@ -80,11 +92,13 @@ class AppFixtures extends Fixture
         foreach(self::CLIENT_USER as $client_user_data) {
             $client_user = new Client();
             $client_user->setEmail($client_user_data[0])
-            ->setRoles(['ROLE_USER'])
+            ->setRoles(['ROLE_CLIENT'])
             ->setPassword('test123')
             ->setNom('Client')
             ->setPrenom($client_user_data[1])
-            ->setDateDeNaissance(new DateTimeImmutable());
+            ->setDateDeNaissance(new DateTimeImmutable())
+            ->setNumeroDeTelephone("0102030405")
+            ->setAdresse($faker->address());
             
             $manager->persist($client_user);
             $clients[$client_user_data[0]] = $client_user;
