@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Eleveur extends User
 {
     #[ORM\Column(length: 100, nullable: true)]
-    #[Groups(['eleveur:read'])]
+    #[Groups(['eleveur:read', 'animal:read'])]
     private ?string $nomElevageAssociation = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -31,7 +31,7 @@ class Eleveur extends User
     private ?string $certificat = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['eleveur:read'])]
+    #[Groups(['eleveur:read', 'animal:read'])]
     private ?string $adresseElevage = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -62,6 +62,7 @@ class Eleveur extends User
      * @var Collection<int, Animal>
      */
     #[ORM\OneToMany(targetEntity: Animal::class, mappedBy: 'eleveur', orphanRemoval: true)]
+    #[Groups(['eleveur:read'])]
     private Collection $animals;
 
     public function __construct()

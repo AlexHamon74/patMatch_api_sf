@@ -22,16 +22,10 @@ class AppFixtures extends Fixture
 {
     const ELEVEUR_USER = [
         ['michel@eleveur.com', 'Michel'],
-        ['maurice@eleveur.com', 'Maurice'],
-        ['raymond@eleveur.com', 'Raymond'],
-        ['josiane@eleveur.com', 'Josiane'],
         ['simone@eleveur.com', 'Simone'],
     ];
     const CLIENT_USER = [
         ['leo@client.com', 'Leo'],
-        ['noah@client.com', 'Noah'],
-        ['lina@client.com', 'Lina'],
-        ['enzo@client.com', 'Enzo'],
         ['jade@client.com', 'Jade'],
     ];
     const CATEGORIE_NOM = ['Nourriture', 'Dressage', 'Nouvelle adption', 'Administratifs'];
@@ -39,9 +33,8 @@ class AppFixtures extends Fixture
     const ESPECE_NOM = ['Chien', 'Chat'];
     const RACE_CHIEN_NOM = ['Labrador', 'Golden retriever', 'Berger australien', 'Husky'];
     const RACE_CHAT_NOM = ['Maine Coon', 'Persan', 'Sphynx', 'Siamois'];
-    const ANIMAL_CHIEN_NOM = ['Rex', 'Luna', 'Max', 'Bella', 'Rocky', 'Nala', 'Simba', 'Milo', 'Oslo', 'Channel'];
-    const ANIMAL_CHAT_NOM = ['Misty', 'Oliver', 'Neko', 'Félix', 'Mochi', 'Tigrou', 'Sushi', 'Salem', 'Moustache', 'Dina'];
-    const COULEUR_ANIMAL = ['Gris', 'Blanc', 'Noir', 'Beige', 'Blanc et noir', 'Orange'];
+    const ANIMAL_CHIEN_NOM = ['Rex', 'Oslo'];
+    const ANIMAL_CHAT_NOM = ['Misty', 'Tigrou'];
 
     public function __construct() {}
 
@@ -187,17 +180,18 @@ class AppFixtures extends Fixture
                 ->setRace($faker->randomElement($races_chien))
                 ->setPoids($faker->numberBetween(2, 50))
                 ->setTaille($faker->numberBetween(10, 100))
-                ->setStatutVaccination($faker->realTextBetween(10, 80))
-                ->setStatutSterilisation($faker->realTextBetween(10, 80))
-                ->setInfosSante($faker->realTextBetween())
-                ->setTypeAlimentation($faker->realTextBetween(10, 80))
-                ->setTypeAlimentationDetails($faker->realTextBetween())
-                ->setNiveauEnergie($faker->realTextBetween())
-                ->setSociabilite($faker->realTextBetween(10, 80))
-                ->setEducation($faker->realTextBetween(10, 80))
-                ->setTypeLogement($faker->realTextBetween(10, 80))
-                ->setFamilleIdeale($faker->realTextBetween(10, 80))
-                ->setBesoinsExercice($faker->realTextBetween())
+                ->setHistoire($faker->realTextBetween(100, 200))
+                ->setStatutVaccination($faker->realTextBetween(10, 50))
+                ->setStatutSterilisation($faker->realTextBetween(10, 50))
+                ->setInfosSante($faker->realTextBetween(10, 50))
+                ->setTypeAlimentation($faker->realTextBetween(10, 50))
+                ->setTypeAlimentationDetails($faker->realTextBetween(10, 50))
+                ->setNiveauEnergie($faker->realTextBetween(10, 50))
+                ->setSociabilite($faker->realTextBetween(10, 50))
+                ->setEducation($faker->realTextBetween(10, 50))
+                ->setTypeLogement($faker->realTextBetween(10, 50))
+                ->setFamilleIdeale($faker->realTextBetween(10, 50))
+                ->setBesoinsExercice($faker->realTextBetween(10, 50))
                 ->setPrix($faker->numberBetween(50, 1000));
 
             $manager->persist($animal);
@@ -213,17 +207,18 @@ class AppFixtures extends Fixture
                 ->setRace($faker->randomElement($races_chat))
                 ->setPoids($faker->numberBetween(2, 50))
                 ->setTaille($faker->numberBetween(10, 100))
-                ->setStatutVaccination($faker->realTextBetween(10, 80))
-                ->setStatutSterilisation($faker->realTextBetween(10, 80))
-                ->setInfosSante($faker->realTextBetween())
-                ->setTypeAlimentation($faker->realTextBetween(10, 80))
+                ->setHistoire($faker->realTextBetween(100, 200))
+                ->setStatutVaccination($faker->realTextBetween(10, 50))
+                ->setStatutSterilisation($faker->realTextBetween(10, 50))
+                ->setInfosSante($faker->realTextBetween(10, 50))
+                ->setTypeAlimentation($faker->realTextBetween(10, 50))
                 ->setTypeAlimentationDetails($faker->realTextBetween())
-                ->setNiveauEnergie($faker->realTextBetween())
-                ->setSociabilite($faker->realTextBetween(10, 80))
-                ->setEducation($faker->realTextBetween(10, 80))
-                ->setTypeLogement($faker->realTextBetween(10, 80))
-                ->setFamilleIdeale($faker->realTextBetween(10, 80))
-                ->setBesoinsExercice($faker->realTextBetween())
+                ->setNiveauEnergie($faker->realTextBetween(10, 50))
+                ->setSociabilite($faker->realTextBetween(10, 50))
+                ->setEducation($faker->realTextBetween(10, 50))
+                ->setTypeLogement($faker->realTextBetween(10, 50))
+                ->setFamilleIdeale($faker->realTextBetween(10, 50))
+                ->setBesoinsExercice($faker->realTextBetween(10, 50))
                 ->setPrix($faker->numberBetween(50, 1000));
 
             $manager->persist($animal);

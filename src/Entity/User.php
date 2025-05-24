@@ -64,13 +64,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['client:read', 'eleveur:read', 'correspondance:read', 'article:read', 'animal:read'])]
+    #[Groups(['client:read', 'eleveur:read', 'animal:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
     #[Assert\Email(message : "L'email n'est pas valide.")]
-    #[Groups(['client:read', 'eleveur:read', 'correspondance:read'])]
+    #[Groups(['client:read', 'eleveur:read', 'animal:read'])]
     private ?string $email = null;
 
     /**
@@ -87,11 +87,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 100, nullable: true)]
-    #[Groups(['client:read', 'eleveur:read', 'correspondance:read', 'article:read', 'animal:read'])]
+    #[Groups(['client:read', 'eleveur:read'])]
     private ?string $nom = null;
 
     #[ORM\Column(length: 100, nullable: true)]
-    #[Groups(['client:read', 'eleveur:read', 'correspondance:read', 'article:read', 'animal:read'])]
+    #[Groups(['client:read', 'eleveur:read'])]
     private ?string $prenom = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
@@ -111,7 +111,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public ?File $photoProfilFile = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['client:read', 'eleveur:read', 'correspondance:read'])]
+    #[Groups(['client:read', 'eleveur:read'])]
     private ?string $photoProfil = null;
 
     #[ORM\Column]
