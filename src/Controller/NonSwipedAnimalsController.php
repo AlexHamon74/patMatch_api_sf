@@ -23,8 +23,8 @@ class NonSwipedAnimalsController extends AbstractController
             // Utilisateur connecté : filtrer les animaux déjà swipés
             $swipedAnimalIds = $this->swipeRepository->createQueryBuilder('c')
                 ->select('IDENTITY(c.animal)')
-                ->where('c.user = :user')
-                ->setParameter('user', $user)
+                ->where('c.client = :client')
+                ->setParameter('client', $user)
                 ->getQuery()
                 ->getSingleColumnResult();
 
