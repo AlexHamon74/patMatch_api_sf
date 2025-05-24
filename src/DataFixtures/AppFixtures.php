@@ -225,17 +225,6 @@ class AppFixtures extends Fixture
             $animaux[$animal_chat_nom] = $animal;
         }
 
-        // -----------------
-        // Ajout des matchs
-        // -----------------
-        foreach($animaux as $animal) {
-            $correspondance = new Correspondance();
-            $correspondance->setUser($faker->randomElement($clients))
-                ->setAnimal($animal);
-            
-            $manager->persist($correspondance);
-        }
-
         $manager->flush();
     }
 }

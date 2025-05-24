@@ -30,6 +30,9 @@ class Correspondance
     #[Groups(['correspondance:read', 'correspondance:write'])]
     private ?Animal $animal = null;
 
+    #[ORM\Column(length: 50)]
+    private ?string $type = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -55,6 +58,18 @@ class Correspondance
     public function setAnimal(?Animal $animal): static
     {
         $this->animal = $animal;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): static
+    {
+        $this->type = $type;
 
         return $this;
     }
