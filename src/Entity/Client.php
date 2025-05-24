@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ClientRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -58,6 +60,18 @@ class Client extends User
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['client:read'])]
     private ?string $niveauExperience = null;
+
+    /**
+     * @var Collection<int, Swipe>
+     */
+    #[ORM\OneToMany(targetEntity: Swipe::class, mappedBy: 'client')]
+    private Collection $swipes;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->swipes = new ArrayCollection();
+    }
 
     public function getTypeLogement(): ?string
     {
@@ -199,6 +213,36 @@ class Client extends User
     public function setNiveauExperience(?string $niveauExperience): static
     {
         $this->niveauExperience = $niveauExperience;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Swipe>
+     */
+    public function getSwipes(): Collection
+    {
+        return $this->swipes;
+    }
+
+    public function addSwipe(Swipe $swipe): static
+    {
+        if (!$this->swipes->contains($swipe)) {
+            $this->swipes->add($swipe);
+            $swipe->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSwipe(Swipe $swipe): static
+    {
+        if ($this->swipes->removeElement($swipe)) {
+            // set the owning side to null (unless already changed)
+            if ($swipe->getClient() === $this) {
+                $swipe->setClient(null);
+            }
+        }
 
         return $this;
     }

@@ -129,18 +129,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: DocumentAdministratif::class, mappedBy: 'utilisateur')]
     private Collection $documentAdministratifs;
 
-    /**
-     * @var Collection<int, Correspondance>
-     */
-    #[ORM\OneToMany(targetEntity: Correspondance::class, mappedBy: 'user')]
-    private Collection $correspondances;
-
-
     public function __construct()
     {
         $this->articles = new ArrayCollection();
         $this->documentAdministratifs = new ArrayCollection();
-        $this->correspondances = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -381,33 +373,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, Correspondance>
-     */
-    public function getCorrespondances(): Collection
-    {
-        return $this->correspondances;
-    }
-
-    public function addCorrespondance(Correspondance $correspondance): static
-    {
-        if (!$this->correspondances->contains($correspondance)) {
-            $this->correspondances->add($correspondance);
-            $correspondance->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCorrespondance(Correspondance $correspondance): static
-    {
-        if ($this->correspondances->removeElement($correspondance)) {
-            // set the owning side to null (unless already changed)
-            if ($correspondance->getUser() === $this) {
-                $correspondance->setUser(null);
-            }
-        }
-
-        return $this;
-    }
 }

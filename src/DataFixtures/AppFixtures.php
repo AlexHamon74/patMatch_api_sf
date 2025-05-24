@@ -6,7 +6,6 @@ use App\Entity\Animal;
 use App\Entity\Article;
 use App\Entity\Categorie;
 use App\Entity\Client;
-use App\Entity\Correspondance;
 use App\Entity\DocumentAdministratif;
 use App\Entity\Eleveur;
 use App\Entity\Espece;

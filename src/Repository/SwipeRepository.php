@@ -2,22 +2,22 @@
 
 namespace App\Repository;
 
-use App\Entity\Correspondance;
+use App\Entity\Swipe;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Correspondance>
+ * @extends ServiceEntityRepository<Swipe>
  */
-class CorrespondanceRepository extends ServiceEntityRepository
+class SwipeRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Correspondance::class);
+        parent::__construct($registry, Swipe::class);
     }
 
     //    /**
-    //     * @return Correspondance[] Returns an array of Correspondance objects
+    //     * @return Swipe[] Returns an array of Swipe objects
     //     */
     //    public function findByExampleField($value): array
     //    {
@@ -31,7 +31,7 @@ class CorrespondanceRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?Correspondance
+    //    public function findOneBySomeField($value): ?Swipe
     //    {
     //        return $this->createQueryBuilder('c')
     //            ->andWhere('c.exampleField = :val')

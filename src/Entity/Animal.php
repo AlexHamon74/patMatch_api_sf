@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Patch;
+use App\Controller\NonSwipedAnimalsController;
 use App\Enum\SexeAnimal;
 use App\Repository\AnimalRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -30,7 +31,13 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
         normalizationContext:['groups' => ['animal:read']],
         denormalizationContext: ['groups' => ['animal:write']],
         operations: [
-            new GetCollection(),
+            new GetCollection(
+                name: 'non_swiped_animals',
+                uriTemplate: '/animals/non-swiped',
+                controller: NonSwipedAnimalsController::class,
+                read: false,
+                output: Animal::class
+            ),
             new Get(),
             new Post(security: "is_granted('ROLE_ELEVEUR') or is_granted('ROLE_ADMIN')"),
             new Patch(),
@@ -49,12 +56,12 @@ class Animal
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['animal:read', 'eleveur:read', 'correspondance:read'])]
+    #[Groups(['animal:read', 'eleveur:read', 'swipe:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
-    #[Groups(['animal:read', 'animal:write', 'eleveur:read', 'correspondance:read'])]
+    #[Groups(['animal:read', 'animal:write', 'eleveur:read', 'swipe:read'])]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
@@ -100,10 +107,10 @@ class Animal
     private ?\DateTimeImmutable $misAJourLe = null;
 
     /**
-     * @var Collection<int, Correspondance>
+     * @var Collection<int, Swipe>
      */
-    #[ORM\OneToMany(targetEntity: Correspondance::class, mappedBy: 'animal')]
-    private Collection $correspondances;
+    #[ORM\OneToMany(targetEntity: Swipe::class, mappedBy: 'animal')]
+    private Collection $swipes;
 
     #[ORM\ManyToOne(inversedBy: 'animals')]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
@@ -165,7 +172,7 @@ class Animal
 
     public function __construct()
     {
-        $this->correspondances = new ArrayCollection();
+        $this->swipes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -301,29 +308,29 @@ class Animal
     }
 
     /**
-     * @return Collection<int, Correspondance>
+     * @return Collection<int, Swipe>
      */
-    public function getCorrespondances(): Collection
+    public function getSwipes(): Collection
     {
-        return $this->correspondances;
+        return $this->swipes;
     }
 
-    public function addCorrespondance(Correspondance $correspondance): static
+    public function addSwipe(Swipe $swipe): static
     {
-        if (!$this->correspondances->contains($correspondance)) {
-            $this->correspondances->add($correspondance);
-            $correspondance->setAnimal($this);
+        if (!$this->swipes->contains($swipe)) {
+            $this->swipes->add($swipe);
+            $swipe->setAnimal($this);
         }
 
         return $this;
     }
 
-    public function removeCorrespondance(Correspondance $correspondance): static
+    public function removeSwipe(Swipe $swipe): static
     {
-        if ($this->correspondances->removeElement($correspondance)) {
+        if ($this->swipes->removeElement($swipe)) {
             // set the owning side to null (unless already changed)
-            if ($correspondance->getAnimal() === $this) {
-                $correspondance->setAnimal(null);
+            if ($swipe->getAnimal() === $this) {
+                $swipe->setAnimal(null);
             }
         }
 
