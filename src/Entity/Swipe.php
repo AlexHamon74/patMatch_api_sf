@@ -21,7 +21,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
                     name: 'my_likes',
                     uriTemplate: '/me/likes',
                     controller: MyLikesController::class,
-                    normalizationContext: ['groups' => ['interaction:read']],
+                    normalizationContext: ['groups' => ['swipe:read']],
                     security: "is_granted('IS_AUTHENTICATED_FULLY')"
                 ),
                 new Post(security: "is_granted('IS_AUTHENTICATED_FULLY')"),
@@ -38,7 +38,7 @@ class Swipe
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['swipe:read', 'swipe:write'])]
+    #[Groups(['swipe:write'])]
     private ?string $type = null;
 
     #[ORM\ManyToOne(inversedBy: 'swipes')]
@@ -46,7 +46,7 @@ class Swipe
     private ?Animal $animal = null;
 
     #[ORM\ManyToOne(inversedBy: 'swipes')]
-    #[Groups(['swipe:read', 'swipe:write'])]
+    #[Groups(['swipe:write'])]
     private ?Client $client = null;
 
     public function getId(): ?int

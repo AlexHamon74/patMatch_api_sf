@@ -16,10 +16,10 @@ class MyLikesController extends AbstractController
             return $this->json(['error' => 'User is not a client'], 403);
         }
 
+        // Récupère les swipes de type LIKE pour ce client
         $likes = $repo->findBy(['client' => $user, 'type' => 'LIKE']);
 
-        $animals = array_map(fn($swipe) => $swipe->getAnimal(), $likes);
-
-        return $this->json($animals, 200, [], ['groups' => ['animal:read']]);
+        // Retourne directement les entités Swipe, avec leur groupe de normalisation
+        return $this->json($likes, 200, [], ['groups' => ['swipe:read']]);
     }
 }
