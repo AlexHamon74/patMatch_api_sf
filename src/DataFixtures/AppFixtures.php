@@ -90,7 +90,19 @@ class AppFixtures extends Fixture
             ->setPrenom($client_user_data[1])
             ->setDateDeNaissance(new DateTimeImmutable())
             ->setNumeroDeTelephone("0102030405")
-            ->setAdresse($faker->address());
+            ->setAdresse($faker->address())
+            ->setTypeLogement($faker->realTextBetween(10, 80))
+            ->setTypeEnvironnement($faker->realTextBetween(10, 80))
+            ->setSexeSouhaite($faker->realTextBetween(10, 80))
+            ->setRaceSouhaite($faker->realTextBetween(10, 80))
+            ->setPresenceEnfant($faker->numberBetween(0, 1))
+            ->setNiveauExperience($faker->realTextBetween(10, 80))
+            ->setEspaceExterieur($faker->realTextBetween(10, 80))
+            ->setEnfantDescription($faker->realTextBetween(10, 80))
+            ->setAutresAnimaux($faker->numberBetween(0, 1))
+            ->setAnimauxPreferes($faker->realTextBetween(10, 80))
+            ->setanimauxDescription($faker->realTextBetween(10, 80))  
+            ->setAgeSouhaite($faker->realTextBetween(10, 80));
             
             $manager->persist($client_user);
             $clients[$client_user_data[0]] = $client_user;

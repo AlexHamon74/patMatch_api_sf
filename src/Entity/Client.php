@@ -65,6 +65,7 @@ class Client extends User
      * @var Collection<int, Swipe>
      */
     #[ORM\OneToMany(targetEntity: Swipe::class, mappedBy: 'client')]
+    #[Groups(['client:read'])]
     private Collection $swipes;
 
     public function __construct()

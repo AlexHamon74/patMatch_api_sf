@@ -115,6 +115,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $photoProfil = null;
 
     #[ORM\Column]
+    #[Groups(['client:read', 'eleveur:read'])]
     private ?\DateTimeImmutable $misAJourLe = null;
     
     /**
