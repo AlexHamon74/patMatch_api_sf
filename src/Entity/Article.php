@@ -25,11 +25,6 @@ class Article
     #[ORM\ManyToOne(inversedBy: 'articles')]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
     #[Groups(['article:read'])]
-    private ?User $utilisateur = null;
-
-    #[ORM\ManyToOne(inversedBy: 'articles')]
-    #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
-    #[Groups(['article:read'])]
     private ?Categorie $categorie = null;
 
     #[ORM\Column(length: 100)]
@@ -57,18 +52,6 @@ class Article
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getUtilisateur(): ?User
-    {
-        return $this->utilisateur;
-    }
-
-    public function setUtilisateur(?User $utilisateur): static
-    {
-        $this->utilisateur = $utilisateur;
-
-        return $this;
     }
 
     public function getCategorie(): ?Categorie

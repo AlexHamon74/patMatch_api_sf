@@ -117,12 +117,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     #[Groups(['client:read', 'eleveur:read'])]
     private ?\DateTimeImmutable $misAJourLe = null;
-    
-    /**
-     * @var Collection<int, Article>
-     */
-    #[ORM\OneToMany(targetEntity: Article::class, mappedBy: 'utilisateur')]
-    private Collection $articles;
+
 
     /**
      * @var Collection<int, DocumentAdministratif>
@@ -132,7 +127,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-        $this->articles = new ArrayCollection();
         $this->documentAdministratifs = new ArrayCollection();
     }
 
@@ -311,36 +305,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->misAJourLe = $misAJourLe;
         
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Article>
-     */
-    public function getArticles(): Collection
-    {
-        return $this->articles;
-    }
-
-    public function addArticle(Article $article): static
-    {
-        if (!$this->articles->contains($article)) {
-            $this->articles->add($article);
-            $article->setUtilisateur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeArticle(Article $article): static
-    {
-        if ($this->articles->removeElement($article)) {
-            // set the owning side to null (unless already changed)
-            if ($article->getUtilisateur() === $this) {
-                $article->setUtilisateur(null);
-            }
-        }
-
         return $this;
     }
 
