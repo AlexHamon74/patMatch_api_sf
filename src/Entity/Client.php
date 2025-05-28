@@ -68,10 +68,17 @@ class Client extends User
     #[Groups(['client:read'])]
     private Collection $swipes;
 
+    /**
+     * @var Collection<int, Adoption>
+     */
+    #[ORM\OneToMany(targetEntity: Adoption::class, mappedBy: 'client')]
+    private Collection $adoptions;
+
     public function __construct()
     {
         parent::__construct();
         $this->swipes = new ArrayCollection();
+        $this->adoptions = new ArrayCollection();
     }
 
     public function getTypeLogement(): ?string
@@ -242,6 +249,36 @@ class Client extends User
             // set the owning side to null (unless already changed)
             if ($swipe->getClient() === $this) {
                 $swipe->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Adoption>
+     */
+    public function getAdoptions(): Collection
+    {
+        return $this->adoptions;
+    }
+
+    public function addAdoption(Adoption $adoption): static
+    {
+        if (!$this->adoptions->contains($adoption)) {
+            $this->adoptions->add($adoption);
+            $adoption->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdoption(Adoption $adoption): static
+    {
+        if ($this->adoptions->removeElement($adoption)) {
+            // set the owning side to null (unless already changed)
+            if ($adoption->getClient() === $this) {
+                $adoption->setClient(null);
             }
         }
 
