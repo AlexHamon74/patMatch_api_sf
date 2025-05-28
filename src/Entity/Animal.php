@@ -56,12 +56,12 @@ class Animal
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['animal:read', 'eleveur:read', 'swipe:read'])]
+    #[Groups(['animal:read', 'eleveur:read', 'swipe:read', 'client:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
-    #[Groups(['animal:read', 'animal:write', 'eleveur:read', 'swipe:read'])]
+    #[Groups(['animal:read', 'animal:write', 'eleveur:read', 'swipe:read', 'client:read'])]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
@@ -114,7 +114,7 @@ class Animal
 
     #[ORM\ManyToOne(inversedBy: 'animals')]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
-    #[Groups(['animal:read', 'animal:write'])]
+    #[Groups(['animal:read', 'animal:write', 'client:read'])]
     private ?Race $race = null;
 
     #[ORM\Column(length: 100)]
@@ -167,7 +167,7 @@ class Animal
 
     #[ORM\ManyToOne(inversedBy: 'animals')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['animal:read', 'animal:write'])]
+    #[Groups(['animal:read', 'animal:write', 'client:read'])]
     private ?Eleveur $eleveur = null;
 
     /**

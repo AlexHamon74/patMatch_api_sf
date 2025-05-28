@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Enum\AdoptionStatus;
 use App\Repository\AdoptionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AdoptionRepository::class)]
 #[ApiResource]
@@ -20,12 +21,15 @@ class Adoption
     private ?Client $client = null;
 
     #[ORM\ManyToOne(inversedBy: 'adoptions')]
+    #[Groups(['client:read'])]
     private ?Animal $animal = null;
 
     #[ORM\Column(enumType: AdoptionStatus::class)]
+    #[Groups(['client:read'])]
     private ?AdoptionStatus $status = null;
 
     #[ORM\Column]
+    #[Groups(['client:read'])]
     private ?\DateTimeImmutable $dateDemande = null;
 
     public function getId(): ?int

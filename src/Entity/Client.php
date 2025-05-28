@@ -72,6 +72,7 @@ class Client extends User
      * @var Collection<int, Adoption>
      */
     #[ORM\OneToMany(targetEntity: Adoption::class, mappedBy: 'client')]
+    #[Groups(['client:read'])]
     private Collection $adoptions;
 
     public function __construct()

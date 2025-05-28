@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Eleveur extends User
 {
     #[ORM\Column(length: 100, nullable: true)]
-    #[Groups(['eleveur:read', 'animal:read'])]
+    #[Groups(['eleveur:read', 'animal:read', 'client:read'])]
     private ?string $nomElevageAssociation = null;
 
     #[ORM\Column(length: 255, nullable: true)]
