@@ -68,7 +68,7 @@ class Animal
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
     #[Assert\date(message : "Ce champs n'est pas valide.")]
     #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'd/m/Y'])]
-    #[Groups(['animal:read', 'animal:write'])]
+    #[Groups(['animal:read', 'eleveur:read', 'animal:write'])]
     private ?\DateTimeImmutable $dateDeNaissance = null;
 
     #[ORM\Column]
@@ -88,7 +88,7 @@ class Animal
 
     #[ORM\Column(enumType: SexeAnimal::class)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
-    #[Groups(['animal:read', 'animal:write'])]
+    #[Groups(['animal:read', 'eleveur:read', 'animal:write'])]
     private ?SexeAnimal $sexe = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -110,11 +110,12 @@ class Animal
      * @var Collection<int, Swipe>
      */
     #[ORM\OneToMany(targetEntity: Swipe::class, mappedBy: 'animal')]
+    #[Groups(['eleveur:read'])]
     private Collection $swipes;
 
     #[ORM\ManyToOne(inversedBy: 'animals')]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
-    #[Groups(['animal:read', 'animal:write', 'client:read'])]
+    #[Groups(['animal:read', 'eleveur:read', 'animal:write', 'client:read'])]
     private ?Race $race = null;
 
     #[ORM\Column(length: 100)]

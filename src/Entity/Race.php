@@ -28,7 +28,7 @@ class Race
 
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
-    #[Groups(['race:read', 'animal:read', 'espece:read', 'client:read'])]
+    #[Groups(['race:read', 'animal:read', 'espece:read', 'client:read', 'eleveur:read'])]
     private ?string $nom = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
