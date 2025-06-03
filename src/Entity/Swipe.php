@@ -22,10 +22,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
                     uriTemplate: '/me/likes',
                     controller: MyLikesController::class,
                     normalizationContext: ['groups' => ['swipe:read']],
-                    security: "is_granted('IS_AUTHENTICATED_FULLY')"
+                    security: "is_granted('ROLE_CLIENT')"
                 ),
-                new Post(security: "is_granted('IS_AUTHENTICATED_FULLY')"),
-                new Delete(),
+                new Post(security: "is_granted('ROLE_CLIENT')"),
+                new Delete(security: "is_granted('ROLE_CLIENT')"),
         ]
     )
 ]
