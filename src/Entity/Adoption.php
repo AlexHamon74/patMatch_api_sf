@@ -3,33 +3,58 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use App\Controller\MyAdoptionRequestsController;
 use App\Enum\AdoptionStatus;
 use App\Repository\AdoptionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AdoptionRepository::class)]
-#[ApiResource]
+#[
+    ApiResource(
+        normalizationContext:['groups' => ['adoption:read']],
+        denormalizationContext: ['groups' => ['adoption:write']],
+        operations: [
+            new GetCollection(
+                name: 'my_adoptions',
+                uriTemplate: '/me/adoptionRequests',
+                controller: MyAdoptionRequestsController::class,
+                security: "is_granted('ROLE_ELEVEUR')",
+                normalizationContext: ['groups' => ['adoption:read']],
+                read: false
+            ),
+            new Post(security: "is_granted('ROLE_CLIENT')"),
+            new Patch(security: "is_granted('ROLE_ELEVEUR')"),
+            new Delete()
+        ]
+    ),
+]
 class Adoption
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['adoption:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'adoptions')]
+    #[Groups(['adoption:write', 'adoption:read'])]
     private ?Client $client = null;
 
     #[ORM\ManyToOne(inversedBy: 'adoptions')]
-    #[Groups(['client:read'])]
+    #[Groups(['adoption:write', 'client:read', 'adoption:read'])]
     private ?Animal $animal = null;
 
     #[ORM\Column(enumType: AdoptionStatus::class)]
-    #[Groups(['client:read'])]
+    #[Groups(['adoption:write', 'client:read', 'adoption:read'])]
     private ?AdoptionStatus $status = null;
 
     #[ORM\Column]
-    #[Groups(['client:read'])]
+    #[Groups(['adoption:write', 'client:read', 'adoption:read'])]
     private ?\DateTimeImmutable $dateDemande = null;
 
     public function getId(): ?int

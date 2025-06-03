@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Adoption;
+use App\Entity\Eleveur;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -40,4 +41,14 @@ class AdoptionRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function findAdoptionsForEleveur(Eleveur $eleveur): array
+    {
+        return $this->createQueryBuilder('a')
+            ->join('a.animal', 'animal')
+            ->andWhere('animal.eleveur = :eleveur')
+            ->setParameter('eleveur', $eleveur)
+            ->orderBy('a.dateDemande', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }
