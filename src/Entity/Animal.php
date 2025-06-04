@@ -11,6 +11,7 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Patch;
 use App\Controller\NonSwipedAnimalsController;
+use App\Controller\UpdateAnimalImageController;
 use App\Enum\SexeAnimal;
 use App\Repository\AnimalRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -22,6 +23,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Context;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: AnimalRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['numeroIdentification'])]
@@ -36,7 +39,16 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
                 uriTemplate: '/animals/non-swiped',
                 controller: NonSwipedAnimalsController::class,
                 read: false,
-                output: Animal::class
+                output: Animal::class,
+                security: "is_granted('ROLE_CLIENT')"
+            ),
+            new Post(
+                name: 'update_animal_image',
+                uriTemplate: '/animals/{id}/image',
+                controller: UpdateAnimalImageController::class,
+                security: "is_granted('ROLE_ELEVEUR')",
+                deserialize: false,
+                inputFormats: ['multipart' => ['multipart/form-data']]
             ),
             new Get(),
             new Post(security: "is_granted('ROLE_ELEVEUR') or is_granted('ROLE_ADMIN')"),
@@ -45,11 +57,14 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
         ]
     ),
     ApiFilter(SearchFilter::class, properties: [
-        'nom' => 'partial', 
-        'race.espece.nom' => 'partial', 
+        'nom' => 'partial',
+        'race.espece.nom' => 'partial',
         'race.nom' => 'partial'
     ]),
 ]
+
+// Permet de gérer l'upload de l'image de l'animal
+#[Vich\Uploadable]
 #[ORM\HasLifecycleCallbacks]
 class Animal
 {
@@ -66,7 +81,6 @@ class Animal
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
-    #[Assert\date(message : "Ce champs n'est pas valide.")]
     #[Context(normalizationContext: [DateTimeNormalizer::FORMAT_KEY => 'd/m/Y'])]
     #[Groups(['animal:read', 'eleveur:read', 'animal:write'])]
     private ?\DateTimeImmutable $dateDeNaissance = null;
@@ -74,7 +88,7 @@ class Animal
     #[ORM\Column]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
     #[Groups(['animal:read', 'animal:write'])]
-    private ?int $numeroIdentification = null;
+    private ?string $numeroIdentification = null;
 
     #[ORM\Column]
     #[Assert\NotBlank(message : 'Ce champs ne peux pas être vide.')]
@@ -100,7 +114,11 @@ class Animal
     #[Groups(['animal:read', 'animal:write'])]
     private ?string $histoire = null;
 
+    #[Vich\UploadableField(mapping: 'animals', fileNameProperty: 'animalImage')]
+    public ?File $animalImageFile = null;
+
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['animal:read', 'animal:write', 'eleveur:read', 'swipe:read', 'client:read', 'adoption:read'])]
     private ?string $animalImage = null;
 
     #[ORM\Column]
@@ -212,12 +230,12 @@ class Animal
         return $this;
     }
 
-    public function getNumeroIdentification(): ?int
+    public function getNumeroIdentification(): ?string
     {
         return $this->numeroIdentification;
     }
 
-    public function setNumeroIdentification(int $numeroIdentification): static
+    public function setNumeroIdentification(string $numeroIdentification): static
     {
         $this->numeroIdentification = $numeroIdentification;
 
@@ -292,6 +310,18 @@ class Animal
     public function setAnimalImage(?string $animalImage): static
     {
         $this->animalImage = $animalImage;
+
+        return $this;
+    }
+
+    public function getAnimalImageFile(): ?File
+    {
+        return $this->animalImageFile;
+    }
+
+    public function setAnimalImageFile(?File $animalImageFile): static
+    {
+        $this->animalImageFile = $animalImageFile;
 
         return $this;
     }
