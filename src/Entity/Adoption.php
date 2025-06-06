@@ -42,7 +42,7 @@ class Adoption
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'adoptions')]
-    #[Groups(['adoption:write', 'adoption:read'])]
+    #[Groups(['adoption:write', 'adoption:read','eleveur:read'])]
     private ?Client $client = null;
 
     #[ORM\ManyToOne(inversedBy: 'adoptions')]
@@ -50,7 +50,7 @@ class Adoption
     private ?Animal $animal = null;
 
     #[ORM\Column(enumType: AdoptionStatus::class)]
-    #[Groups(['adoption:write', 'client:read', 'adoption:read'])]
+    #[Groups(['adoption:write', 'client:read', 'adoption:read', 'eleveur:read'])]
     private ?AdoptionStatus $status = null;
 
     #[ORM\Column]

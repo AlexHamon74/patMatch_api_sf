@@ -193,6 +193,7 @@ class Animal
      * @var Collection<int, Adoption>
      */
     #[ORM\OneToMany(targetEntity: Adoption::class, mappedBy: 'animal')]
+    #[Groups(['eleveur:read'])]
     private Collection $adoptions;
 
     public function __construct()
