@@ -38,7 +38,7 @@ class Swipe
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['swipe:write', 'eleveur:read'])]
+    #[Groups(['swipe:write', 'eleveur:read', 'client:read'])]
     private ?string $type = null;
 
     #[ORM\ManyToOne(inversedBy: 'swipes')]
