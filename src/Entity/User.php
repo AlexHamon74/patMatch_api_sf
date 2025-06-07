@@ -118,18 +118,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['client:read', 'eleveur:read'])]
     private ?\DateTimeImmutable $misAJourLe = null;
 
-
-    /**
-     * @var Collection<int, DocumentAdministratif>
-     */
-    #[ORM\OneToMany(targetEntity: DocumentAdministratif::class, mappedBy: 'utilisateur')]
-    private Collection $documentAdministratifs;
-
-    public function __construct()
-    {
-        $this->documentAdministratifs = new ArrayCollection();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -305,36 +293,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->misAJourLe = $misAJourLe;
         
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, DocumentAdministratif>
-     */
-    public function getDocumentAdministratifs(): Collection
-    {
-        return $this->documentAdministratifs;
-    }
-
-    public function addDocumentAdministratif(DocumentAdministratif $documentAdministratif): static
-    {
-        if (!$this->documentAdministratifs->contains($documentAdministratif)) {
-            $this->documentAdministratifs->add($documentAdministratif);
-            $documentAdministratif->setUtilisateur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeDocumentAdministratif(DocumentAdministratif $documentAdministratif): static
-    {
-        if ($this->documentAdministratifs->removeElement($documentAdministratif)) {
-            // set the owning side to null (unless already changed)
-            if ($documentAdministratif->getUtilisateur() === $this) {
-                $documentAdministratif->setUtilisateur(null);
-            }
-        }
-
         return $this;
     }
 

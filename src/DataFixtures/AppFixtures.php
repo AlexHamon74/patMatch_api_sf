@@ -6,7 +6,6 @@ use App\Entity\Animal;
 use App\Entity\Article;
 use App\Entity\Categorie;
 use App\Entity\Client;
-use App\Entity\DocumentAdministratif;
 use App\Entity\Eleveur;
 use App\Entity\Espece;
 use App\Entity\Race;
@@ -163,17 +162,6 @@ class AppFixtures extends Fixture
             
             $manager->persist($race_chat);
             $races_chat[$race_chat_nom] = $race_chat;
-        }
-
-        // ----------------------------------
-        // Ajout des documents administratifs
-        // ----------------------------------
-        for($i=0; $i<5; $i++) {
-            $document_administratif = new DocumentAdministratif();
-            $document_administratif->setUtilisateur($faker->randomElement($eleveurs))
-                ->setCheminDocument('chemin_doc');
-
-            $manager->persist($document_administratif);
         }
 
         // -----------------
