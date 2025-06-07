@@ -77,7 +77,6 @@ class Client extends User
 
     public function __construct()
     {
-        parent::__construct();
         $this->swipes = new ArrayCollection();
         $this->adoptions = new ArrayCollection();
     }
