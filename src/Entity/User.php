@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -20,6 +18,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Delete;
 use App\Controller\MeController;
+use App\Controller\UpdateUserImageController;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -37,6 +36,13 @@ use Symfony\Component\Validator\Constraints as Assert;
                     security: "is_granted('IS_AUTHENTICATED_FULLY')",
                     read: false,
                     output: User::class,
+                ),
+                new Post(
+                    name: 'update_user_image',
+                    uriTemplate: '/users/{id}/image',
+                    controller: UpdateUserImageController::class,
+                    deserialize: false,
+                    inputFormats: ['multipart' => ['multipart/form-data']]
                 ),
                 new Get,
                 new Post(),
